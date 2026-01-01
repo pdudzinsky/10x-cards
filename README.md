@@ -30,6 +30,7 @@ AI-powered flashcard learning application that accelerates knowledge retention t
 ## Tech Stack
 
 ### Frontend
+
 - **Astro 5** - Fast, modern static site generator with minimal JavaScript
 - **React 19** - Interactive UI components
 - **TypeScript 5** - Static typing and enhanced IDE support
@@ -38,6 +39,7 @@ AI-powered flashcard learning application that accelerates knowledge retention t
 - **Lucide React** - Icon library
 
 ### Backend
+
 - **Supabase** - Comprehensive backend-as-a-service solution
   - PostgreSQL database
   - Built-in user authentication
@@ -45,16 +47,19 @@ AI-powered flashcard learning application that accelerates knowledge retention t
   - Multi-language SDK support
 
 ### AI Integration
+
 - **Openrouter.ai** - Unified access to multiple AI models
   - Access to OpenAI, Anthropic, Google, and other providers
   - Financial limit controls on API keys
   - Cost-effective model selection
 
 ### CI/CD & Hosting
+
 - **GitHub Actions** - Continuous integration and deployment pipelines
 - **DigitalOcean** - Application hosting via Docker containers
 
 ### Development Tools
+
 - **ESLint** - Code linting and quality checks
 - **Prettier** - Code formatting
 - **Husky** - Git hooks for pre-commit checks
@@ -71,18 +76,21 @@ AI-powered flashcard learning application that accelerates knowledge retention t
 ### Installation
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/yourusername/10x-cards.git
 cd 10x-cards
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Set up environment variables:
-Create a `.env` file in the root directory with the following variables:
+   Create a `.env` file in the root directory with the following variables:
+
 ```env
 # Supabase Configuration
 SUPABASE_URL=your_supabase_project_url
@@ -93,6 +101,7 @@ OPENROUTER_API_KEY=your_openrouter_api_key
 ```
 
 4. Start the development server:
+
 ```bash
 npm run dev
 ```
@@ -101,19 +110,20 @@ The application will be available at `http://localhost:4321` (default Astro port
 
 ## Available Scripts
 
-| Script | Description |
-|--------|-------------|
-| `npm run dev` | Start the development server with hot reload |
-| `npm run build` | Build the application for production |
-| `npm run preview` | Preview the production build locally |
-| `npm run astro` | Run Astro CLI commands |
-| `npm run lint` | Check code for linting errors |
-| `npm run lint:fix` | Automatically fix linting errors |
-| `npm run format` | Format code with Prettier |
+| Script             | Description                                  |
+| ------------------ | -------------------------------------------- |
+| `npm run dev`      | Start the development server with hot reload |
+| `npm run build`    | Build the application for production         |
+| `npm run preview`  | Preview the production build locally         |
+| `npm run astro`    | Run Astro CLI commands                       |
+| `npm run lint`     | Check code for linting errors                |
+| `npm run lint:fix` | Automatically fix linting errors             |
+| `npm run format`   | Format code with Prettier                    |
 
 ### Pre-commit Hooks
 
 The project uses Husky and lint-staged to run automatic checks before commits:
+
 - TypeScript, TSX, and Astro files are linted and auto-fixed
 - JSON, CSS, and Markdown files are formatted with Prettier
 
@@ -154,6 +164,7 @@ The project uses Husky and lint-staged to run automatic checks before commits:
 This project is in active development. The MVP scope focuses on core functionality for Polish-language flashcard generation and spaced repetition learning.
 
 ### Recent Activity
+
 - Initial project setup with Astro, React, and Tailwind
 - Tech stack documentation completed
 - Product Requirements Document (PRD) finalized

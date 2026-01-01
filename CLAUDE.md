@@ -1,9 +1,11 @@
 # AI Rules for 10x-cards
 
 ### Główny problem
+
 Manualne tworzenie wysokiej jakości fiszek edukacyjnych jest czasochłonne, co zniechęca do korzystania z efektywnej metody nauki jaką jest spaced repetition.
 
 ### Najmniejszy zestaw funkcjonalności
+
 - Generowanie fiszek przez AI na podstawie wprowadzonego tekstu (kopiuj-wklej)
 - Manualne tworzenie fiszek
 - Przeglądanie, edycja i usuwanie fiszek
@@ -11,6 +13,7 @@ Manualne tworzenie wysokiej jakości fiszek edukacyjnych jest czasochłonne, co 
 - Integracja fiszek z gotowym algorytmem powtórek
 
 ### Co NIE wchodzi w zakres MVP
+
 - Własny, zaawansowany algorytm powtórek (jak SuperMemo, Anki)
 - Import wielu formatów (PDF, DOCX, itp.)
 - Współdzielenie zestawów fiszek między użytkownikami
@@ -18,6 +21,7 @@ Manualne tworzenie wysokiej jakości fiszek edukacyjnych jest czasochłonne, co 
 - Aplikacje mobilne (na początek tylko web)
 
 ### Kryteria sukcesu
+
 - 75% fiszek wygenerowanych przez AI jest akceptowane przez użytkownika
 - Użytkownicy tworzą 75% fiszek z wykorzystaniem AI
 
@@ -100,7 +104,7 @@ When modifying the directory structure, always update this section.
 - Leverage View Transitions API for smooth page transitions (use ClientRouter)
 - Use content collections with type safety for blog posts, documentation, etc.
 - Leverage Server Endpoints for API routes
-- Use POST, GET  - uppercase format for endpoint handlers
+- Use POST, GET - uppercase format for endpoint handlers
 - Use `export const prerender = false` for API routes
 - Use zod for input validation in API routes
 - Extract logic into services in `src/lib/services`
