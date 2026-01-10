@@ -7,14 +7,15 @@
 Tabela profilu użytkownika powiązana 1:1 z `auth.users` (Supabase Auth), zawierająca również dane limitu generacji AI.
 Tabela `auth.users` jest w pełni zarządzana przez Supabase.
 
-| Kolumna                 | Typ                      | Ograniczenia                                  | Opis                          |
-|-------------------------|--------------------------|-----------------------------------------------|-------------------------------|
-| id                      | uuid                     | PRIMARY KEY, REFERENCES auth.users(id) ON DELETE CASCADE | Identyfikator użytkownika (= auth.users.id) |
-| created_at              | timestamptz              | NOT NULL DEFAULT now()                        | Data utworzenia profilu       |
-| ai_generation_date      | date                     | NULL                                          | Data ostatniej generacji (Europe/Warsaw) |
-| ai_generation_count     | integer                  | NOT NULL DEFAULT 0 CHECK (ai_generation_count >= 0 AND ai_generation_count <= 5) | Liczba generacji w danym dniu |
+| Kolumna             | Typ         | Ograniczenia                                                                     | Opis                                        |
+| ------------------- | ----------- | -------------------------------------------------------------------------------- | ------------------------------------------- |
+| id                  | uuid        | PRIMARY KEY, REFERENCES auth.users(id) ON DELETE CASCADE                         | Identyfikator użytkownika (= auth.users.id) |
+| created_at          | timestamptz | NOT NULL DEFAULT now()                                                           | Data utworzenia profilu                     |
+| ai_generation_date  | date        | NULL                                                                             | Data ostatniej generacji (Europe/Warsaw)    |
+| ai_generation_count | integer     | NOT NULL DEFAULT 0 CHECK (ai_generation_count >= 0 AND ai_generation_count <= 5) | Liczba generacji w danym dniu               |
 
 **Logika limitu generacji:**
+
 - Przy próbie generacji sprawdzamy czy `ai_generation_date` == dzisiaj (Europe/Warsaw)
 - Jeśli tak i `ai_generation_count` < 5 → inkrementujemy count
 - Jeśli data inna lub NULL → resetujemy: date = dzisiaj, count = 1
@@ -23,13 +24,13 @@ Tabela `auth.users` jest w pełni zarządzana przez Supabase.
 
 Talia fiszek należąca do użytkownika.
 
-| Kolumna       | Typ                      | Ograniczenia                                  | Opis                          |
-|---------------|--------------------------|-----------------------------------------------|-------------------------------|
-| id            | uuid                     | PRIMARY KEY DEFAULT gen_random_uuid()         | Identyfikator tali            |
-| owner_id      | uuid                     | NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE | Właściciel tali               |
-| name          | text                     | NOT NULL CHECK (char_length(name) >= 1 AND char_length(name) <= 100) | Nazwa tali (1-100 znaków)     |
-| created_at    | timestamptz              | NOT NULL DEFAULT now()                        | Data utworzenia               |
-| last_used_at  | timestamptz              | NOT NULL DEFAULT now()                        | Ostatnie użycie (sortowanie)  |
+| Kolumna      | Typ         | Ograniczenia                                                         | Opis                         |
+| ------------ | ----------- | -------------------------------------------------------------------- | ---------------------------- |
+| id           | uuid        | PRIMARY KEY DEFAULT gen_random_uuid()                                | Identyfikator tali           |
+| owner_id     | uuid        | NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE                 | Właściciel tali              |
+| name         | text        | NOT NULL CHECK (char_length(name) >= 1 AND char_length(name) <= 100) | Nazwa tali (1-100 znaków)    |
+| created_at   | timestamptz | NOT NULL DEFAULT now()                                               | Data utworzenia              |
+| last_used_at | timestamptz | NOT NULL DEFAULT now()                                               | Ostatnie użycie (sortowanie) |
 
 ### 1.3 public.card_status (ENUM)
 
@@ -41,23 +42,24 @@ CREATE TYPE public.card_status AS ENUM ('unverified', 'accepted');
 
 Fiszka z przodu/tyłem oraz parametrami algorytmu SM-2.
 
-| Kolumna           | Typ                      | Ograniczenia                                  | Opis                          |
-|-------------------|--------------------------|-----------------------------------------------|-------------------------------|
-| id                | uuid                     | PRIMARY KEY DEFAULT gen_random_uuid()         | Identyfikator fiszki          |
-| deck_id           | uuid                     | NOT NULL REFERENCES decks(id) ON DELETE CASCADE | Talia, do której należy fiszka |
-| owner_id          | uuid                     | NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE | Właściciel (denormalizacja)   |
-| front             | text                     | NOT NULL CHECK (char_length(trim(front)) > 0 AND char_length(front) <= 200) | Przód fiszki (1-200 znaków)   |
-| back              | text                     | NOT NULL CHECK (char_length(trim(back)) > 0 AND char_length(back) <= 500) | Tył fiszki (1-500 znaków)     |
-| status            | card_status              | NOT NULL DEFAULT 'unverified'                 | Status fiszki                 |
-| created_at        | timestamptz              | NOT NULL DEFAULT now()                        | Data utworzenia               |
-| updated_at        | timestamptz              | NOT NULL DEFAULT now()                        | Data ostatniej modyfikacji    |
-| next_review_at    | timestamptz              | NULL                                          | Data następnej powtórki (NULL dla unverified) |
-| interval_days     | integer                  | NOT NULL DEFAULT 0 CHECK (interval_days >= 0) | Interwał powtórek w dniach    |
-| repetitions       | integer                  | NOT NULL DEFAULT 0 CHECK (repetitions >= 0)   | Liczba pomyślnych powtórek    |
-| ease_factor_x100  | integer                  | NOT NULL DEFAULT 250 CHECK (ease_factor_x100 >= 130) | Czynnik łatwości × 100 (min 1.30) |
-| last_reviewed_at  | timestamptz              | NULL                                          | Data ostatniej powtórki       |
+| Kolumna          | Typ         | Ograniczenia                                                                | Opis                                          |
+| ---------------- | ----------- | --------------------------------------------------------------------------- | --------------------------------------------- |
+| id               | uuid        | PRIMARY KEY DEFAULT gen_random_uuid()                                       | Identyfikator fiszki                          |
+| deck_id          | uuid        | NOT NULL REFERENCES decks(id) ON DELETE CASCADE                             | Talia, do której należy fiszka                |
+| owner_id         | uuid        | NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE                        | Właściciel (denormalizacja)                   |
+| front            | text        | NOT NULL CHECK (char_length(trim(front)) > 0 AND char_length(front) <= 200) | Przód fiszki (1-200 znaków)                   |
+| back             | text        | NOT NULL CHECK (char_length(trim(back)) > 0 AND char_length(back) <= 500)   | Tył fiszki (1-500 znaków)                     |
+| status           | card_status | NOT NULL DEFAULT 'unverified'                                               | Status fiszki                                 |
+| created_at       | timestamptz | NOT NULL DEFAULT now()                                                      | Data utworzenia                               |
+| updated_at       | timestamptz | NOT NULL DEFAULT now()                                                      | Data ostatniej modyfikacji                    |
+| next_review_at   | timestamptz | NULL                                                                        | Data następnej powtórki (NULL dla unverified) |
+| interval_days    | integer     | NOT NULL DEFAULT 0 CHECK (interval_days >= 0)                               | Interwał powtórek w dniach                    |
+| repetitions      | integer     | NOT NULL DEFAULT 0 CHECK (repetitions >= 0)                                 | Liczba pomyślnych powtórek                    |
+| ease_factor_x100 | integer     | NOT NULL DEFAULT 250 CHECK (ease_factor_x100 >= 130)                        | Czynnik łatwości × 100 (min 1.30)             |
+| last_reviewed_at | timestamptz | NULL                                                                        | Data ostatniej powtórki                       |
 
 **Uwaga o SM-2:**
+
 - `ease_factor_x100` = 250 oznacza współczynnik 2.50 (wartość startowa w SM-2)
 - Minimalny `ease_factor_x100` = 130 (odpowiada 1.30 w oryginalnym SM-2)
 - `next_review_at` jest ustawiane na `now()` przy akceptacji fiszki lub manualnym tworzeniu
@@ -84,6 +86,7 @@ public.decks
 ```
 
 ### Kardynalność:
+
 - **auth.users ↔ profiles:** 1:1 (profiles.id = auth.users.id, zawiera dane limitu generacji)
 - **auth.users → decks:** 1:N (użytkownik może mieć wiele tali)
 - **decks → cards:** 1:N (talia zawiera wiele fiszek)
@@ -195,12 +198,14 @@ CREATE POLICY cards_delete ON public.cards
 ### 5.1 Denormalizacja owner_id w cards
 
 Celowa denormalizacja `owner_id` w tabeli `cards` (duplikacja z `decks.owner_id`) upraszcza polityki RLS i eliminuje potrzebę JOIN-ów w klauzulach USING/WITH CHECK. Spójność jest zapewniona przez:
+
 - Kontrolę przy INSERT (aplikacja ustawia owner_id = deck.owner_id)
 - Brak możliwości przenoszenia fiszek między taliami w MVP
 
 ### 5.2 Wartości domyślne SM-2
 
 Przy tworzeniu nowej fiszki:
+
 - `interval_days` = 0
 - `repetitions` = 0
 - `ease_factor_x100` = 250 (odpowiada 2.50)
@@ -210,12 +215,14 @@ Przy tworzeniu nowej fiszki:
 ### 5.3 Aktualizacja last_used_at
 
 Pole `decks.last_used_at` jest aktualizowane przy:
+
 - Rozpoczęciu sesji powtórek (`review_session_started`)
 - Opcjonalnie przy innych akcjach w przyszłości
 
 ### 5.4 Kolejność fiszek w sesji powtórek
 
 Fiszki kwalifikujące się do powtórki:
+
 ```sql
 SELECT * FROM cards
 WHERE deck_id = :deck_id
@@ -227,6 +234,7 @@ ORDER BY next_review_at ASC;
 ### 5.5 Licznik fiszek do powtórki
 
 Obliczany dynamicznie przy renderowaniu listy tali:
+
 ```sql
 SELECT COUNT(*) FROM cards
 WHERE deck_id = :deck_id
@@ -237,6 +245,7 @@ WHERE deck_id = :deck_id
 ### 5.6 Masowe akcje (accept/reject)
 
 Wykonywane w jednej transakcji:
+
 ```sql
 -- Masowa akceptacja
 UPDATE cards
@@ -251,6 +260,7 @@ WHERE deck_id = :deck_id AND status = 'unverified';
 ### 5.7 Timezone dla limitu generacji
 
 Data jest liczona w strefie `Europe/Warsaw`:
+
 ```sql
 (now() AT TIME ZONE 'Europe/Warsaw')::date
 ```
@@ -258,6 +268,7 @@ Data jest liczona w strefie `Europe/Warsaw`:
 ### 5.8 Brak soft-delete
 
 Zgodnie z decyzjami projektowymi:
+
 - Usunięcie tali = CASCADE DELETE fiszek
 - Odrzucenie fiszki = twarde DELETE
 - Usunięcie fiszki = twarde DELETE
@@ -266,6 +277,7 @@ Zgodnie z decyzjami projektowymi:
 ### 5.9 Rozszerzalność enum card_status
 
 Enum `card_status` można rozszerzyć w przyszłości przez migrację:
+
 ```sql
 ALTER TYPE card_status ADD VALUE 'new_status' AFTER 'accepted';
 ```
