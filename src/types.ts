@@ -1,0 +1,202 @@
+import type { Database } from "./db/database.types";
+
+// ============================================================================
+// Entity Types (Base types from database)
+// ============================================================================
+
+export type CardStatus = Database["public"]["Enums"]["card_status"];
+
+// ============================================================================
+// Profile DTOs
+// ============================================================================
+
+/**
+ * Profile DTO - User profile with AI generation limits
+ * GET /v1/profile response
+ */
+export type ProfileDTO = Database["public"]["Tables"]["profiles"]["Row"];
+
+// ============================================================================
+// Deck DTOs
+// ============================================================================
+
+/**
+ * Deck DTO - Basic deck information
+ * POST /v1/decks response
+ * PATCH /v1/decks/{deckId} response
+ */
+export type DeckDTO = Omit<Database["public"]["Tables"]["decks"]["Row"], "owner_id">;
+
+/**
+ * Deck List Item DTO - Deck with additional computed field
+ * Used in GET /v1/decks response
+ */
+export type DeckListItemDTO = Pick<
+  Database["public"]["Tables"]["decks"]["Row"],
+  "id" | "name" | "last_used_at"
+> & {
+  due_cards_count: number;
+};
+
+/**
+ * Paginated Decks Response DTO
+ * GET /v1/decks response
+ */
+export type PaginatedDecksResponseDTO = {
+  items: DeckListItemDTO[];
+  limit: number;
+  offset: number;
+  total: number;
+};
+
+// ============================================================================
+// Card DTOs
+// ============================================================================
+
+/**
+ * Card DTO - Full card information (without internal fields)
+ * POST /v1/decks/{deckId}/cards response
+ * PATCH /v1/cards/{cardId} response
+ */
+export type CardDTO = Omit<
+  Database["public"]["Tables"]["cards"]["Row"],
+  "owner_id" | "deck_id"
+>;
+
+/**
+ * Card List Item DTO - Card summary for list views
+ * Used in GET /v1/decks/{deckId}/cards response
+ */
+export type CardListItemDTO = Pick<
+  Database["public"]["Tables"]["cards"]["Row"],
+  "id" | "front" | "back" | "status" | "next_review_at"
+>;
+
+/**
+ * Card List Response DTO
+ * GET /v1/decks/{deckId}/cards response
+ */
+export type CardListResponseDTO = {
+  items: CardListItemDTO[];
+};
+
+// ============================================================================
+// Review DTOs
+// ============================================================================
+
+/**
+ * Review Card DTO - Card data for review session
+ * Used in ReviewSessionDTO
+ */
+export type ReviewCardDTO = Pick<
+  Database["public"]["Tables"]["cards"]["Row"],
+  "id" | "front" | "back"
+>;
+
+/**
+ * Review Session DTO - Review session with cards to review
+ * POST /v1/decks/{deckId}/reviews/start response
+ */
+export type ReviewSessionDTO = {
+  cards: ReviewCardDTO[];
+};
+
+/**
+ * Review Answer Response DTO - SM-2 algorithm result
+ * POST /v1/reviews/{cardId}/answer response
+ * Note: ease_factor is transformed from ease_factor_x100 / 100
+ */
+export type ReviewAnswerResponseDTO = {
+  next_review_at: string;
+  interval_days: number;
+  ease_factor: number;
+};
+
+// ============================================================================
+// AI Generation DTOs
+// ============================================================================
+
+/**
+ * Generate Cards Response DTO
+ * POST /v1/decks/{deckId}/ai-generate response
+ */
+export type GenerateCardsResponseDTO = {
+  generated: number;
+  remaining_daily_limit: number;
+};
+
+// ============================================================================
+// Bulk Operations DTOs
+// ============================================================================
+
+/**
+ * Accept All Response DTO
+ * POST /v1/decks/{deckId}/cards/accept-all response
+ */
+export type AcceptAllResponseDTO = {
+  accepted: number;
+};
+
+/**
+ * Delete Unverified Response DTO
+ * DELETE /v1/decks/{deckId}/cards/unverified response
+ */
+export type DeleteUnverifiedResponseDTO = {
+  deleted: number;
+};
+
+// ============================================================================
+// Command Models (Request Bodies)
+// ============================================================================
+
+/**
+ * Create Deck Command
+ * POST /v1/decks request
+ */
+export type CreateDeckCommand = Pick<
+  Database["public"]["Tables"]["decks"]["Insert"],
+  "name"
+>;
+
+/**
+ * Update Deck Command
+ * PATCH /v1/decks/{deckId} request
+ */
+export type UpdateDeckCommand = Required<
+  Pick<Database["public"]["Tables"]["decks"]["Update"], "name">
+>;
+
+/**
+ * Create Card Command
+ * POST /v1/decks/{deckId}/cards request
+ */
+export type CreateCardCommand = Pick<
+  Database["public"]["Tables"]["cards"]["Insert"],
+  "front" | "back"
+>;
+
+/**
+ * Update Card Command
+ * PATCH /v1/cards/{cardId} request
+ */
+export type UpdateCardCommand = Required<
+  Pick<Database["public"]["Tables"]["cards"]["Update"], "front" | "back">
+>;
+
+/**
+ * Generate Cards Command
+ * POST /v1/decks/{deckId}/ai-generate request
+ */
+export type GenerateCardsCommand = {
+  source_text: string;
+  cards_count: 5 | 10 | 20;
+};
+
+/**
+ * Review Answer Command
+ * POST /v1/reviews/{cardId}/answer request
+ * Grade scale: 0 (complete blackout) to 5 (perfect response)
+ */
+export type ReviewAnswerCommand = {
+  grade: 0 | 1 | 2 | 3 | 4 | 5;
+};
