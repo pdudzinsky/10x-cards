@@ -34,8 +34,8 @@ export async function GET(context: APIContext) {
     // Parse and validate query params
     const url = new URL(context.request.url);
     const queryParams = {
-      limit: url.searchParams.get("limit"),
-      offset: url.searchParams.get("offset"),
+      limit: url.searchParams.get("limit") ?? undefined,
+      offset: url.searchParams.get("offset") ?? undefined,
     };
 
     const validated = GetDecksQuerySchema.parse(queryParams);
