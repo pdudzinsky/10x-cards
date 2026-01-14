@@ -22,7 +22,10 @@ export const onRequest = defineMiddleware(async (context, next) => {
     });
 
     // Verify token and get user
-    const { data: { user }, error } = await supabase.auth.getUser();
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.getUser();
 
     context.locals.supabase = supabase;
     context.locals.user = user ? { id: user.id } : null;

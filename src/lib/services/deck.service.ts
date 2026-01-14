@@ -83,11 +83,7 @@ export async function listDecks(
 /**
  * Creates a new deck for the user
  */
-export async function createDeck(
-  supabase: SupabaseClientType,
-  userId: string,
-  name: string
-): Promise<DeckDTO> {
+export async function createDeck(supabase: SupabaseClientType, userId: string, name: string): Promise<DeckDTO> {
   const trimmedName = name.trim();
 
   const { data, error } = await supabase
@@ -143,11 +139,7 @@ export async function updateDeck(
 /**
  * Deletes a deck and all its cards (cascade)
  */
-export async function deleteDeck(
-  supabase: SupabaseClientType,
-  userId: string,
-  deckId: string
-): Promise<void> {
+export async function deleteDeck(supabase: SupabaseClientType, userId: string, deckId: string): Promise<void> {
   // First check if deck exists and user has permission
   const { data: deck, error: selectError } = await supabase
     .from("decks")
@@ -161,11 +153,7 @@ export async function deleteDeck(
   }
 
   // Delete the deck (cascade will delete all cards)
-  const { error } = await supabase
-    .from("decks")
-    .delete()
-    .eq("id", deckId)
-    .eq("owner_id", userId);
+  const { error } = await supabase.from("decks").delete().eq("id", deckId).eq("owner_id", userId);
 
   if (error) {
     throw error;

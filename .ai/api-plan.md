@@ -27,6 +27,7 @@
 ### 2.1 Profiles
 
 #### GET /v1/profile
+
 - **Description**: Fetch current user profile including AI limits
 - **Auth**: Required
 - **Response 200**:
@@ -44,6 +45,7 @@
 ### 2.2 Decks
 
 #### GET /v1/decks
+
 - **Description**: List user decks sorted by last usage
 - **Auth**: Required
 - **Query params**:
@@ -71,6 +73,7 @@
 ---
 
 #### POST /v1/decks
+
 - **Description**: Create new deck
 - **Auth**: Required
 - **Request**:
@@ -95,6 +98,7 @@
 ---
 
 #### PATCH /v1/decks/{deckId}
+
 - **Description**: Rename deck
 - **Auth**: Required
 - **Request**:
@@ -112,6 +116,7 @@
 ---
 
 #### DELETE /v1/decks/{deckId}
+
 - **Description**: Delete deck with cascade cards deletion
 - **Auth**: Required
 - **Response 204**
@@ -122,6 +127,7 @@
 ### 2.3 Cards
 
 #### GET /v1/decks/{deckId}/cards
+
 - **Description**: List cards in a deck
 - **Auth**: Required
 - **Query params**:
@@ -147,6 +153,7 @@
 ---
 
 #### POST /v1/decks/{deckId}/cards
+
 - **Description**: Manually create card (accepted immediately)
 - **Auth**: Required
 - **Request**:
@@ -172,6 +179,7 @@
 ---
 
 #### PATCH /v1/cards/{cardId}
+
 - **Description**: Edit card (always results in status=accepted)
 - **Auth**: Required
 - **Request**:
@@ -190,6 +198,7 @@
 ---
 
 #### DELETE /v1/cards/{cardId}
+
 - **Description**: Permanently delete accepted card
 - **Auth**: Required
 - **Response 204**
@@ -201,6 +210,7 @@
 ### 2.4 AI Generation
 
 #### POST /v1/decks/{deckId}/ai-generate
+
 - **Description**: Generate unverified cards using AI
 - **Auth**: Required
 - **Request**:
@@ -227,6 +237,7 @@
 ### 2.5 Verification (Bulk)
 
 #### POST /v1/decks/{deckId}/cards/accept-all
+
 - **Description**: Accept all unverified cards in deck
 - **Auth**: Required
 - **Response 200**:
@@ -242,6 +253,7 @@
 ---
 
 #### DELETE /v1/decks/{deckId}/cards/unverified
+
 - **Description**: Reject (delete) all unverified cards
 - **Auth**: Required
 - **Response 200**:
@@ -257,6 +269,7 @@
 ### 2.6 Reviews
 
 #### POST /v1/decks/{deckId}/reviews/start
+
 - **Description**: Start review session and update last_used_at
 - **Auth**: Required
 - **Response 200**:
@@ -278,6 +291,7 @@
 ---
 
 #### POST /v1/reviews/{cardId}/answer
+
 - **Description**: Submit SM-2 grade for a card
 - **Auth**: Required
 - **Request**:
@@ -311,6 +325,7 @@
 ## 4. Validation and Business Logic
 
 ### Validation Rules
+
 - **Deck name**: 1-100 characters
 - **Card front**: non-empty, max 200 characters
 - **Card back**: non-empty, max 500 characters
@@ -319,6 +334,7 @@
 - **SM-2 grade**: integer 0-5
 
 ### Business Logic Handling
+
 - AI generation limits enforced atomically using `profiles.ai_generation_date` and `ai_generation_count`
 - Timezone-sensitive logic uses `Europe/Warsaw`
 - AI generation is transactional: on failure, no cards are persisted

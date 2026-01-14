@@ -41,12 +41,7 @@ export async function GET(context: APIContext) {
     const validated = GetDecksQuerySchema.parse(queryParams);
 
     // Call service
-    const result = await deckService.listDecks(
-      supabase,
-      user.id,
-      validated.limit,
-      validated.offset
-    );
+    const result = await deckService.listDecks(supabase, user.id, validated.limit, validated.offset);
 
     return new Response(JSON.stringify(result), {
       status: 200,

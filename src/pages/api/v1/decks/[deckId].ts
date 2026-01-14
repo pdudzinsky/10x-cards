@@ -38,12 +38,7 @@ export async function PATCH(context: APIContext) {
     const validated = UpdateDeckBodySchema.parse(body);
 
     // Call service
-    const result = await deckService.updateDeck(
-      supabase,
-      user.id,
-      validatedDeckId,
-      validated.name
-    );
+    const result = await deckService.updateDeck(supabase, user.id, validatedDeckId, validated.name);
 
     return new Response(JSON.stringify(result), {
       status: 200,
