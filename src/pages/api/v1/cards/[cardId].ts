@@ -105,7 +105,6 @@ export async function PATCH(context: APIContext) {
       });
     }
 
-    console.error("Error updating card:", error);
     return new Response(JSON.stringify({ error: "Internal server error" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
@@ -176,7 +175,6 @@ export async function DELETE(context: APIContext) {
       );
     }
 
-    console.error("Error deleting card:", error);
     return new Response(JSON.stringify({ error: "Internal server error" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },

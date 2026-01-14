@@ -81,7 +81,6 @@ export async function PATCH(context: APIContext) {
     }
 
     // Database or other errors
-    console.error("Error updating deck:", error);
     return new Response(JSON.stringify({ error: "Internal server error" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
@@ -139,7 +138,6 @@ export async function DELETE(context: APIContext) {
     }
 
     // Database or other errors
-    console.error("Error deleting deck:", error);
     return new Response(JSON.stringify({ error: "Internal server error" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },

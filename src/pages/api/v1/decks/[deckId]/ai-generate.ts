@@ -127,7 +127,6 @@ export async function POST(context: APIContext) {
 
     // AI generation error
     if (error instanceof generationService.AIGenerationError) {
-      console.error("AI generation error:", error.message);
       return new Response(JSON.stringify({ error: "AI generation failed" }), {
         status: 502,
         headers: { "Content-Type": "application/json" },
@@ -135,7 +134,6 @@ export async function POST(context: APIContext) {
     }
 
     // Generic error
-    console.error("Error generating cards:", error);
     return new Response(JSON.stringify({ error: "Internal server error" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },

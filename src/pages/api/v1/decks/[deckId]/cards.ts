@@ -95,7 +95,6 @@ export async function GET(context: APIContext) {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    console.error("Error listing cards:", error);
     return new Response(JSON.stringify({ error: "Internal server error" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
@@ -185,8 +184,6 @@ export async function POST(context: APIContext) {
         headers: { "Content-Type": "application/json" },
       });
     }
-
-    console.error("Error creating card:", error);
     return new Response(JSON.stringify({ error: "Internal server error" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },

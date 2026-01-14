@@ -63,7 +63,6 @@ export async function GET(context: APIContext) {
     }
 
     // Database or other errors
-    console.error("Error listing decks:", error);
     return new Response(JSON.stringify({ error: "Internal server error" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
@@ -127,7 +126,6 @@ export async function POST(context: APIContext) {
     }
 
     // Database or other errors
-    console.error("Error creating deck:", error);
     return new Response(JSON.stringify({ error: "Internal server error" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },

@@ -57,7 +57,6 @@ export async function listDecks(
         .lte("next_review_at", new Date().toISOString());
 
       if (countError) {
-        console.error(`Error counting due cards for deck ${deck.id}:`, countError);
         // If counting fails, default to 0
         return {
           ...deck,
@@ -117,7 +116,7 @@ export async function updateDeck(
 ): Promise<DeckDTO> {
   const trimmedName = name.trim();
 
-  const { data, error, count } = await supabase
+  const { data, error } = await supabase
     .from("decks")
     .update({ name: trimmedName })
     .eq("id", deckId)
