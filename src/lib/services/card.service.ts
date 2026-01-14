@@ -228,3 +228,64 @@ export async function deleteCard(supabase: SupabaseClientType, userId: string, c
     throw deleteError;
   }
 }
+
+/**
+ * Accepts all unverified cards in a deck
+ * Sets status to 'accepted', next_review_at to now(), updated_at to now()
+ */
+export async function acceptAllUnverifiedCards(
+  supabase: SupabaseClientType,
+  deckId: string
+): Promise<{ accepted: number }> {
+  const now = new Date().toISOString();
+
+  const { data, error } = await supabase
+    .from("cards")
+    .update({
+      status: "accepted",
+      next_review_at: now,
+      updated_at: now,
+    })
+    .eq("deck_id", deckId)
+    .eq("status", "unverified")
+    .select("id");
+
+  if (error) {
+    throw error;
+  }
+
+  return { accepted: data?.length ?? 0 };
+}
+
+/**
+ * Deletes all unverified cards in a deck
+ */
+export async function deleteAllUnverifiedCards(
+  supabase: SupabaseClientType,
+  deckId: string
+): Promise<{ deleted: number }> {
+  // First count cards to delete (DELETE doesn't return count in Supabase)
+  const { data: toDelete, error: countError } = await supabase
+    .from("cards")
+    .select("id")
+    .eq("deck_id", deckId)
+    .eq("status", "unverified");
+
+  if (countError) {
+    throw countError;
+  }
+
+  const count = toDelete?.length ?? 0;
+
+  if (count === 0) {
+    return { deleted: 0 };
+  }
+
+  const { error: deleteError } = await supabase.from("cards").delete().eq("deck_id", deckId).eq("status", "unverified");
+
+  if (deleteError) {
+    throw deleteError;
+  }
+
+  return { deleted: count };
+}
