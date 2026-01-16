@@ -36,6 +36,14 @@ export type DeckListItemDTO = Pick<Database["public"]["Tables"]["decks"]["Row"],
 };
 
 /**
+ * Deck Detail DTO - Full deck information with due cards count
+ * GET /v1/decks/{deckId} response
+ */
+export type DeckDetailDTO = DeckDTO & {
+  due_cards_count: number;
+};
+
+/**
  * Paginated Decks Response DTO
  * GET /v1/decks response
  */

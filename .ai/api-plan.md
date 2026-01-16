@@ -72,6 +72,26 @@
 
 ---
 
+#### GET /v1/decks/{deckId}
+
+- **Description**: Fetch single deck details
+- **Auth**: Required
+- **Response 200**:
+  ```json
+  {
+    "id": "uuid",
+    "name": "Deck name",
+    "created_at": "timestamptz",
+    "last_used_at": "timestamptz",
+    "due_cards_count": 12
+  }
+  ```
+- **Errors**:
+  - 401 Unauthorized
+  - 404 Not found
+
+---
+
 #### POST /v1/decks
 
 - **Description**: Create new deck
@@ -199,13 +219,12 @@
 
 #### DELETE /v1/cards/{cardId}
 
-- **Description**: Permanently delete accepted card
+- **Description**: Permanently delete card (works for both accepted and unverified)
 - **Auth**: Required
 - **Response 204**
 - **Errors**:
   - 401 Unauthorized
   - 404 Not found
-  - 409 Card not deletable (if unverified)
 
 ### 2.4 AI Generation
 
@@ -234,7 +253,26 @@
   - 404 Deck not found
   - 502 AI generation failed
 
-### 2.5 Verification (Bulk)
+### 2.5 Verification
+
+#### POST /v1/cards/{cardId}/accept
+
+- **Description**: Accept single unverified card (initializes SM-2 scheduling)
+- **Auth**: Required
+- **Response 200**:
+  ```json
+  {
+    "id": "uuid",
+    "status": "accepted",
+    "next_review_at": "timestamptz"
+  }
+  ```
+- **Errors**:
+  - 401 Unauthorized
+  - 404 Not found
+  - 409 Card already accepted
+
+---
 
 #### POST /v1/decks/{deckId}/cards/accept-all
 

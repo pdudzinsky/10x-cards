@@ -187,12 +187,12 @@ Założenia architektoniczne:
   - Filtr statusu (all/unverified/accepted).
   - Akcje per fiszka:
     - Dla Niezweryfikowanej:
-      - “Zapisz” (bez zmian) -> wymagane API: brak dedykowanego endpointu w planie; w UI należy traktować to jako “aktualizacja” i zapewnić spójność z backendem (patrz sekcja 10).
-      - “Edytuj i zapisz” -> inline edycja + zapis.
-      - “Odrzuć” -> usunięcie fiszki.
+      - "Zapisz" (bez zmian) -> POST `/v1/cards/{cardId}/accept`.
+      - "Edytuj i zapisz" -> inline edycja + PATCH `/v1/cards/{cardId}` (ustawia status=accepted).
+      - "Odrzuć" -> DELETE `/v1/cards/{cardId}`.
     - Dla Zaakceptowanej:
-      - “Edytuj” -> inline edycja, “Zapisz”, “Anuluj”.
-      - “Usuń” -> dialog potwierdzenia, a następnie DELETE.
+      - "Edytuj" -> inline edycja, "Zapisz" (PATCH), "Anuluj".
+      - "Usuń" -> dialog potwierdzenia, a następnie DELETE `/v1/cards/{cardId}`.
   - Akcje masowe (tylko gdy filtr = Niezweryfikowane lub gdy na liście są niezweryfikowane):
     - “Zaakceptuj wszystkie” -> POST `/v1/decks/{deckId}/cards/accept-all`
     - “Odrzuć wszystkie” -> DELETE `/v1/decks/{deckId}/cards/unverified`
@@ -200,7 +200,6 @@ Założenia architektoniczne:
   - Dostępność: przyciski z etykietami, dialogi modalne z trap focus, ESC zamyka.
   - Bezpieczeństwo: operacje destrukcyjne wymagają potwierdzenia (co najmniej bulk reject oraz usuwanie zaakceptowanej).
   - Brak cofania odrzucenia: UI jasno komunikuje nieodwracalność w dialogu.
-  - Konflikty: DELETE zaakceptowanej przy błędzie 409 (np. próba usunięcia niezweryfikowanej) -> komunikat “Nie można usunąć tej fiszki w tym stanie”.
 
 ---
 
@@ -356,31 +355,37 @@ Założenia architektoniczne:
 
 ## Mapowanie API do widoków (spójność kontraktów)
 
-- `/v1/decks`:
+- `GET /v1/decks`:
   - Widok: lista tali `/decks` (paginacja limit/offset).
-- `/v1/decks` POST:
+- `POST /v1/decks`:
   - Widok: create deck `/decks/new`.
-- `/v1/decks/{deckId}` PATCH/DELETE:
-  - Widok: edit deck `/decks/:deckId/edit`, delete z `/decks/:deckId`.
-- `/v1/decks/{deckId}/cards` GET:
-  - Widok: szczegóły tali `/decks/:deckId` (filtr statusu).
-- `/v1/decks/{deckId}/cards` POST:
+- `GET /v1/decks/{deckId}`:
+  - Widok: szczegóły tali `/decks/:deckId` (nagłówek z nazwą i due_cards_count).
+- `PATCH /v1/decks/{deckId}`:
+  - Widok: edit deck `/decks/:deckId/edit`.
+- `DELETE /v1/decks/{deckId}`:
+  - Widok: delete z `/decks/:deckId` (dialog potwierdzenia).
+- `GET /v1/decks/{deckId}/cards`:
+  - Widok: szczegóły tali `/decks/:deckId` (lista fiszek z filtrem statusu).
+- `POST /v1/decks/{deckId}/cards`:
   - Widok: manualne dodanie fiszki inline na `/decks/:deckId`.
-- `/v1/cards/{cardId}` PATCH:
-  - Widok: edycja inline fiszki (zaakceptowanej oraz edytowanej niezweryfikowanej, jeśli backend to dopuszcza).
-- `/v1/cards/{cardId}` DELETE:
-  - Widok: usuwanie zaakceptowanej fiszki (obsługa 409 dla niedozwolonego stanu).
-- `/v1/decks/{deckId}/ai-generate` POST:
+- `PATCH /v1/cards/{cardId}`:
+  - Widok: edycja inline fiszki (zaakceptowanej oraz niezweryfikowanej z "Edytuj i zapisz").
+- `DELETE /v1/cards/{cardId}`:
+  - Widok: usuwanie fiszki (działa dla obu statusów: accepted i unverified).
+- `POST /v1/cards/{cardId}/accept`:
+  - Widok: akceptacja pojedynczej niezweryfikowanej fiszki bez edycji ("Zapisz" w `/decks/:deckId`).
+- `POST /v1/decks/{deckId}/ai-generate`:
   - Widok: generowanie AI `/decks/:deckId/ai-generate`.
-- `/v1/decks/{deckId}/cards/accept-all` POST:
+- `POST /v1/decks/{deckId}/cards/accept-all`:
   - Widok: bulk accept w `/decks/:deckId`.
-- `/v1/decks/{deckId}/cards/unverified` DELETE:
+- `DELETE /v1/decks/{deckId}/cards/unverified`:
   - Widok: bulk reject w `/decks/:deckId`.
-- `/v1/decks/{deckId}/reviews/start` POST:
+- `POST /v1/decks/{deckId}/reviews/start`:
   - Widok: start powtórek `/decks/:deckId/review`.
-- `/v1/reviews/{cardId}/answer` POST:
+- `POST /v1/reviews/{cardId}/answer`:
   - Widok: odpowiedź w powtórkach `/decks/:deckId/review`.
-- `/v1/profile` GET:
+- `GET /v1/profile`:
   - Opcjonalnie używane w tle (np. do wyświetlenia licznika limitu AI), ale nie jest wymagane dla podstawowego flow generacji (bo endpoint generacji zwraca remaining_daily_limit).
 
 ---
@@ -399,7 +404,7 @@ Założenia architektoniczne:
 - US-010 Weryfikacja fiszki AI: `/decks/:deckId` (akcje: zapisz, edytuj i zapisz, odrzuć).
 - US-011 Masowa weryfikacja: `/decks/:deckId` (accept-all, reject-all).
 - US-012 Edycja fiszki: `/decks/:deckId` (inline edit + zapisz/anuluj).
-- US-013 Usunięcie fiszki: `/decks/:deckId` (dialog + DELETE; błąd 409 jako komunikat).
+- US-013 Usunięcie fiszki: `/decks/:deckId` (dialog + DELETE).
 - US-014 Rozpoczęcie sesji powtórek: `/decks/:deckId` -> `/decks/:deckId/review`.
 - US-015 Ocena fiszki: `/decks/:deckId/review` (przyciski 0-5, zapis odpowiedzi).
 - US-016 Zakończenie sesji: `/decks/:deckId/review` (przycisk “Zakończ” zawsze dostępny, powrót do szczegółów).

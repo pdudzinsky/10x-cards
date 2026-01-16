@@ -1,7 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 import type { Database } from "../../db/database.types";
-import type { DeckDTO, DeckListItemDTO, PaginatedDecksResponseDTO } from "../../types";
+import type { DeckDTO, DeckDetailDTO, DeckListItemDTO, PaginatedDecksResponseDTO } from "../../types";
 
 export type SupabaseClientType = SupabaseClient<Database>;
 
@@ -13,6 +13,35 @@ export class DeckNotFoundError extends Error {
     super(`Deck with id ${deckId} not found or you don't have permission to access it`);
     this.name = "DeckNotFoundError";
   }
+}
+
+/**
+ * Gets single deck by ID with due cards count
+ */
+export async function getDeck(supabase: SupabaseClientType, userId: string, deckId: string): Promise<DeckDetailDTO> {
+  const { data: deck, error: deckError } = await supabase
+    .from("decks")
+    .select("id, name, created_at, last_used_at")
+    .eq("id", deckId)
+    .eq("owner_id", userId)
+    .single();
+
+  if (deckError || !deck) {
+    throw new DeckNotFoundError(deckId);
+  }
+
+  // Count due cards
+  const { count: dueCount, error: countError } = await supabase
+    .from("cards")
+    .select("*", { count: "exact", head: true })
+    .eq("deck_id", deckId)
+    .eq("status", "accepted")
+    .lte("next_review_at", new Date().toISOString());
+
+  return {
+    ...deck,
+    due_cards_count: countError ? 0 : dueCount || 0,
+  };
 }
 
 /**

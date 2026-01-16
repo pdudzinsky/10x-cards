@@ -14,6 +14,58 @@ const UpdateDeckBodySchema = z.object({
 });
 
 /**
+ * GET /v1/decks/{deckId}
+ * Returns single deck details with due cards count
+ */
+export async function GET(context: APIContext) {
+  const { user, supabase } = context.locals;
+
+  if (!user) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
+  try {
+    const deckId = context.params.deckId;
+    const validatedDeckId = DeckIdSchema.parse(deckId);
+
+    const result = await deckService.getDeck(supabase, user.id, validatedDeckId);
+
+    return new Response(JSON.stringify(result), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return new Response(
+        JSON.stringify({
+          error: "Invalid input",
+          details: error.errors,
+        }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+    }
+
+    if (error instanceof DeckNotFoundError) {
+      return new Response(JSON.stringify({ error: "Deck not found" }), {
+        status: 404,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    return new Response(JSON.stringify({ error: "Internal server error" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+}
+
+/**
  * PATCH /v1/decks/{deckId}
  * Updates deck name
  */
