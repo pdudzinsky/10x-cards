@@ -1,13 +1,9 @@
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
-export type Database = {
+export interface Database {
   graphql_public: {
-    Tables: {
-      [_ in never]: never;
-    };
-    Views: {
-      [_ in never]: never;
-    };
+    Tables: Record<never, never>;
+    Views: Record<never, never>;
     Functions: {
       graphql: {
         Args: {
@@ -19,12 +15,8 @@ export type Database = {
         Returns: Json;
       };
     };
-    Enums: {
-      [_ in never]: never;
-    };
-    CompositeTypes: {
-      [_ in never]: never;
-    };
+    Enums: Record<never, never>;
+    CompositeTypes: Record<never, never>;
   };
   public: {
     Tables: {
@@ -130,20 +122,14 @@ export type Database = {
         Relationships: [];
       };
     };
-    Views: {
-      [_ in never]: never;
-    };
-    Functions: {
-      [_ in never]: never;
-    };
+    Views: Record<never, never>;
+    Functions: Record<never, never>;
     Enums: {
       card_status: "unverified" | "accepted";
     };
-    CompositeTypes: {
-      [_ in never]: never;
-    };
+    CompositeTypes: Record<never, never>;
   };
-};
+}
 
 type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">;
 
