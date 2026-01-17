@@ -198,3 +198,36 @@ export interface GenerateCardsCommand {
 export interface ReviewAnswerCommand {
   grade: 0 | 1 | 2 | 3 | 4 | 5;
 }
+
+// ============================================================================
+// UI/View Model Types
+// ============================================================================
+
+/**
+ * Card Status Filter - Filter for card list view
+ * Used in deck detail view to filter cards by status
+ */
+export type CardStatusFilter = "all" | "unverified" | "accepted";
+
+/**
+ * Card Form State - Form state for creating/editing cards
+ * Used in AddCardForm and CardItem edit mode
+ */
+export interface CardFormState {
+  front: string;
+  back: string;
+  errors: {
+    front?: string;
+    back?: string;
+  };
+}
+
+/**
+ * Dialogs State - State for confirmation dialogs
+ * Used in DeckDetailView for managing dialog visibility
+ */
+export interface DialogsState {
+  deleteDeck: boolean;
+  deleteCard: { isOpen: boolean; cardId: string | null };
+  rejectAll: boolean;
+}
