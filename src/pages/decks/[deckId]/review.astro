@@ -1,0 +1,12 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import { ReviewSessionView } from "../../../components/review-session/ReviewSessionView";
+
+export const prerender = false;
+
+const { deckId } = Astro.params;
+---
+
+<Layout title="Powtórka | 10x Cards">
+  <ReviewSessionView client:load deckId={deckId} />
+</Layout>

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { useAIGenerate } from "./hooks/useAIGenerate";
 import { AIGenerateHeader } from "./AIGenerateHeader";
 import { AIGenerateForm } from "./AIGenerateForm";
@@ -6,18 +6,25 @@ import type { AIGenerateViewProps } from "./types";
 import { toast } from "sonner";
 
 export function AIGenerateView({ deckId }: AIGenerateViewProps) {
+  const handleSuccess = useCallback(
+    (result: { generated: number }) => {
+      toast.success(`Wygenerowano ${result.generated} fiszek`);
+      setTimeout(() => {
+        window.location.href = `/decks/${deckId}`;
+      }, 1000);
+    },
+    [deckId]
+  );
+
+  const handleUnauthorized = useCallback(() => {
+    window.location.href = "/login";
+  }, []);
+
   const { formState, remainingLimit, isSubmitting, error, setSourceText, setCardsCount, submit, clearError } =
     useAIGenerate({
       deckId,
-      onSuccess: (result) => {
-        toast.success(`Wygenerowano ${result.generated} fiszek`);
-        setTimeout(() => {
-          window.location.href = `/decks/${deckId}`;
-        }, 1000);
-      },
-      onUnauthorized: () => {
-        window.location.href = "/login";
-      },
+      onSuccess: handleSuccess,
+      onUnauthorized: handleUnauthorized,
     });
 
   useEffect(() => {
@@ -34,13 +41,13 @@ export function AIGenerateView({ deckId }: AIGenerateViewProps) {
     }
   }, [error, clearError]);
 
-  const handleCancel = () => {
+  const handleCancel = useCallback(() => {
     window.location.href = `/decks/${deckId}`;
-  };
+  }, [deckId]);
 
-  const handleBack = () => {
+  const handleBack = useCallback(() => {
     window.location.href = `/decks/${deckId}`;
-  };
+  }, [deckId]);
 
   return (
     <div className="max-w-2xl mx-auto py-8 px-4">
