@@ -1,0 +1,12 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import { AIGenerateView } from "../../../components/ai-generate/AIGenerateView";
+
+export const prerender = false;
+
+const { deckId } = Astro.params;
+---
+
+<Layout title="Generowanie fiszek AI | 10x Cards">
+  <AIGenerateView client:load deckId={deckId} />
+</Layout>
