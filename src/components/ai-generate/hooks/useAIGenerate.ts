@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { AIGenerateFormState, AIGenerateError, GenerationResult } from "../types";
-import { generateCards, ApiError } from "../api";
+import { generateCards, fetchProfile, ApiError } from "../api";
 
 export interface UseAIGenerateOptions {
   deckId: string;
@@ -12,6 +12,7 @@ export interface UseAIGenerateResult {
   formState: AIGenerateFormState;
   remainingLimit: number | null;
   isSubmitting: boolean;
+  isLoadingLimit: boolean;
   error: AIGenerateError | null;
   setSourceText: (text: string) => void;
   setCardsCount: (count: 5 | 10 | 20) => void;
@@ -29,8 +30,28 @@ export function useAIGenerate({ deckId, onSuccess, onUnauthorized }: UseAIGenera
     errors: {},
   });
   const [remainingLimit, setRemainingLimit] = useState<number | null>(null);
+  const [isLoadingLimit, setIsLoadingLimit] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<AIGenerateError | null>(null);
+
+  // Pobierz limit przy montowaniu komponentu
+  useEffect(() => {
+    const loadProfile = async () => {
+      try {
+        const profile = await fetchProfile();
+        setRemainingLimit(profile.daily_ai_generations_remaining);
+      } catch (err) {
+        if (err instanceof ApiError && err.status === 401) {
+          onUnauthorized();
+        }
+        // Jeśli nie udało się pobrać profilu, nie blokujemy całego formularza
+      } finally {
+        setIsLoadingLimit(false);
+      }
+    };
+
+    loadProfile();
+  }, [onUnauthorized]);
 
   const setSourceText = (text: string) => {
     const trimmedLength = text.trim().length;
@@ -151,6 +172,7 @@ export function useAIGenerate({ deckId, onSuccess, onUnauthorized }: UseAIGenera
     formState,
     remainingLimit,
     isSubmitting,
+    isLoadingLimit,
     error,
     setSourceText,
     setCardsCount,

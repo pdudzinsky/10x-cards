@@ -20,12 +20,21 @@ export function AIGenerateView({ deckId }: AIGenerateViewProps) {
     window.location.href = "/login";
   }, []);
 
-  const { formState, remainingLimit, isSubmitting, error, setSourceText, setCardsCount, submit, clearError } =
-    useAIGenerate({
-      deckId,
-      onSuccess: handleSuccess,
-      onUnauthorized: handleUnauthorized,
-    });
+  const {
+    formState,
+    remainingLimit,
+    isSubmitting,
+    isLoadingLimit,
+    error,
+    setSourceText,
+    setCardsCount,
+    submit,
+    clearError,
+  } = useAIGenerate({
+    deckId,
+    onSuccess: handleSuccess,
+    onUnauthorized: handleUnauthorized,
+  });
 
   useEffect(() => {
     if (error) {
@@ -55,6 +64,7 @@ export function AIGenerateView({ deckId }: AIGenerateViewProps) {
       <AIGenerateForm
         formState={formState}
         remainingLimit={remainingLimit}
+        isLoadingLimit={isLoadingLimit}
         isSubmitting={isSubmitting}
         onSourceTextChange={setSourceText}
         onCardsCountChange={setCardsCount}

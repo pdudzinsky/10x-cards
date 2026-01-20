@@ -7,6 +7,7 @@ import { ActionButtons } from "./ActionButtons";
 export function AIGenerateForm({
   formState,
   remainingLimit,
+  isLoadingLimit,
   isSubmitting,
   onSourceTextChange,
   onCardsCountChange,
@@ -14,10 +15,11 @@ export function AIGenerateForm({
   onCancel,
 }: AIGenerateFormProps) {
   const isFormValid = formState.sourceText.trim().length >= 50 && formState.sourceText.length <= 10000;
+  const isLimitExceeded = remainingLimit !== null && remainingLimit <= 0;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (isFormValid && !isSubmitting) {
+    if (isFormValid && !isSubmitting && !isLimitExceeded) {
       onSubmit();
     }
   };
@@ -33,9 +35,15 @@ export function AIGenerateForm({
 
       <CardsCountSelect value={formState.cardsCount} onChange={onCardsCountChange} disabled={isSubmitting} />
 
-      <LimitInfo remainingLimit={remainingLimit} isLoading={false} />
+      <LimitInfo remainingLimit={remainingLimit} isLoading={isLoadingLimit} />
 
-      <ActionButtons isSubmitting={isSubmitting} isDisabled={!isFormValid} onSubmit={onSubmit} onCancel={onCancel} />
+      <ActionButtons
+        isSubmitting={isSubmitting}
+        isDisabled={!isFormValid || isLimitExceeded}
+        remainingLimit={remainingLimit}
+        onSubmit={onSubmit}
+        onCancel={onCancel}
+      />
     </form>
   );
 }

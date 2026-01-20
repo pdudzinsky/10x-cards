@@ -1,4 +1,4 @@
-import type { GenerateCardsCommand, GenerateCardsResponseDTO } from "../../types";
+import type { GenerateCardsCommand, GenerateCardsResponseDTO, ProfileDTO } from "../../types";
 
 export class ApiError extends Error {
   constructor(
@@ -9,6 +9,24 @@ export class ApiError extends Error {
     super(message);
     this.name = "ApiError";
   }
+}
+
+/**
+ * Pobiera profil użytkownika z limitem generacji
+ * GET /api/v1/profile
+ */
+export async function fetchProfile(): Promise<ProfileDTO> {
+  const response = await fetch("/api/v1/profile", {
+    method: "GET",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    const data = await response.json().catch(() => ({}));
+    throw new ApiError(data.error || "Failed to fetch profile", response.status, data.details);
+  }
+
+  return response.json();
 }
 
 /**

@@ -22,6 +22,7 @@ export interface AIGenerateViewProps {
 export interface AIGenerateFormProps {
   formState: AIGenerateFormState;
   remainingLimit: number | null;
+  isLoadingLimit: boolean;
   isSubmitting: boolean;
   onSourceTextChange: (text: string) => void;
   onCardsCountChange: (count: 5 | 10 | 20) => void;
@@ -62,6 +63,7 @@ export interface LimitInfoProps {
 export interface ActionButtonsProps {
   isSubmitting: boolean;
   isDisabled: boolean;
+  remainingLimit: number | null;
   onSubmit: () => void;
   onCancel: () => void;
 }
