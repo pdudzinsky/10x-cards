@@ -64,7 +64,7 @@ export function ReviewSessionView({ deckId }: ReviewSessionViewProps) {
 
   if (status === "active" && session && currentCard) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="min-h-screen">
         <ReviewHeader currentIndex={session.currentIndex} totalCards={session.totalCards} onFinish={handleFinish} />
         <main className="py-8">
           <ReviewCard card={currentCard} isFlipped={isFlipped} onFlip={handleFlip} />
