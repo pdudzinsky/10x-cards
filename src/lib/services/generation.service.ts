@@ -3,6 +3,12 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "../../db/database.types";
 import type { GenerateCardsResponseDTO } from "../../types";
 import { createAIGenerationService } from "./ai-generation.service";
+import {
+  OpenRouterError,
+  OpenRouterValidationError,
+  OpenRouterModerationError,
+  OpenRouterRateLimitError,
+} from "./openrouter/openrouter.errors";
 
 export type SupabaseClientType = SupabaseClient<Database>;
 
@@ -168,6 +174,21 @@ export async function generateAndSaveCards(
   try {
     generatedCards = await aiService.generateCards(sourceText, cardsCount);
   } catch (error) {
+    // Map OpenRouter errors to user-friendly messages
+    if (error instanceof OpenRouterValidationError) {
+      throw new AIGenerationError(error.message);
+    }
+    if (error instanceof OpenRouterModerationError) {
+      throw new AIGenerationError("Tekst źródłowy zawiera niedozwoloną treść");
+    }
+    if (error instanceof OpenRouterRateLimitError) {
+      throw new AIGenerationError("Zbyt wiele zapytań, spróbuj ponownie później");
+    }
+    if (error instanceof OpenRouterError) {
+      console.error(`[AI Generation] ${error.name}: ${error.message}`);
+      throw new AIGenerationError("Usługa AI tymczasowo niedostępna");
+    }
+    // Fallback for non-OpenRouter errors
     throw new AIGenerationError(error instanceof Error ? error.message : "AI generation failed");
   }
 

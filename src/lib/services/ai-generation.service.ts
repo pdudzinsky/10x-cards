@@ -1,4 +1,5 @@
 import type { GeneratedCard } from "../../types";
+import { OpenRouterService } from "./openrouter/openrouter.service";
 
 // ============================================================================
 // AI Generation Service Interface
@@ -82,14 +83,20 @@ export class MockAIGenerationService implements AIGenerationService {
 
 /**
  * Creates an AI generation service instance.
- * Currently returns mock implementation.
- * TODO: Return OpenRouterAIGenerationService when API key is available.
+ * Returns OpenRouterService when API key is available, otherwise MockAIGenerationService.
  */
 export function createAIGenerationService(): AIGenerationService {
-  // TODO: Check for OPENROUTER_API_KEY and return real implementation
-  // const apiKey = import.meta.env.OPENROUTER_API_KEY;
-  // if (apiKey) {
-  //   return new OpenRouterAIGenerationService(apiKey);
-  // }
+  const apiKey = import.meta.env.OPENROUTER_API_KEY;
+
+  if (apiKey) {
+    return new OpenRouterService({
+      apiKey,
+      appName: "10x-cards",
+      appUrl: import.meta.env.SITE ?? "",
+    });
+  }
+
+  // Fallback to mock in development environment
+  console.warn("[AI Generation] No OPENROUTER_API_KEY found, using mock service");
   return new MockAIGenerationService();
 }
