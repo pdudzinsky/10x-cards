@@ -1,0 +1,15 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { LoginForm } from "../components/auth/LoginForm";
+
+export const prerender = false;
+
+const url = new URL(Astro.request.url);
+const redirectTo = url.searchParams.get("redirectTo") || "/decks";
+---
+
+<Layout title="Logowanie | 10x Cards">
+  <main class="flex min-h-screen items-center justify-center px-4 py-8">
+    <LoginForm client:load redirectTo={redirectTo} />
+  </main>
+</Layout>
