@@ -1,12 +1,4 @@
 ---
-import Welcome from "../components/Welcome.astro";
-import Layout from "../layouts/Layout.astro";
-
-// Note: We don't redirect authenticated users server-side because
-// Bearer tokens are in localStorage (client-side only).
-// The Welcome component can handle client-side redirect if needed.
+// Redirect to decks page (main app view)
+return Astro.redirect("/decks");
 ---
-
-<Layout>
-  <Welcome />
-</Layout>
