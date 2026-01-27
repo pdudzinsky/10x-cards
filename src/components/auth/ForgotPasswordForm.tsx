@@ -1,4 +1,4 @@
-import { type FormEvent, useCallback, useState } from "react";
+import { type FormEvent, useCallback, useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,6 +23,14 @@ export function ForgotPasswordForm() {
   const [serverError, setServerError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+
+  // Redirect if already logged in
+  useEffect(() => {
+    const token = localStorage.getItem("auth_token");
+    if (token) {
+      window.location.href = "/decks";
+    }
+  }, []);
 
   const handleEmailChange = useCallback((value: string) => {
     setEmail(value);

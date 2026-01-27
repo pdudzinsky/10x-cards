@@ -1,4 +1,4 @@
-import { type FormEvent, useCallback, useState } from "react";
+import { type FormEvent, useCallback, useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -44,6 +44,14 @@ export function ResetPasswordForm({ accessToken }: ResetPasswordFormProps) {
   const [serverError, setServerError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+
+  // Redirect if already logged in
+  useEffect(() => {
+    const token = localStorage.getItem("auth_token");
+    if (token) {
+      window.location.href = "/decks";
+    }
+  }, []);
 
   const handlePasswordChange = useCallback((value: string) => {
     setPassword(value);

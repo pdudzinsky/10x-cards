@@ -1,4 +1,4 @@
-import { type FormEvent, useCallback, useState } from "react";
+import { type FormEvent, useCallback, useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -36,6 +36,14 @@ export function LoginForm({ redirectTo = "/decks" }: LoginFormProps) {
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [serverError, setServerError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  // Redirect if already logged in
+  useEffect(() => {
+    const token = localStorage.getItem("auth_token");
+    if (token) {
+      window.location.href = redirectTo;
+    }
+  }, [redirectTo]);
 
   const handleEmailChange = useCallback((value: string) => {
     setEmail(value);
