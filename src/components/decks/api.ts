@@ -1,4 +1,5 @@
 import type { CreateDeckCommand, DeckDTO, PaginatedDecksResponseDTO } from "../../types";
+import { getAuthHeaders } from "../../lib/api/auth-headers";
 
 /**
  * API error with status code
@@ -28,7 +29,9 @@ export async function listDecks(
 
   const response = await fetch(url.toString(), {
     method: "GET",
-    credentials: "include",
+    headers: {
+      ...getAuthHeaders(),
+    },
     signal,
   });
 
@@ -46,9 +49,9 @@ export async function listDecks(
 export async function createDeck(command: CreateDeckCommand): Promise<DeckDTO> {
   const response = await fetch("/api/v1/decks", {
     method: "POST",
-    credentials: "include",
     headers: {
       "Content-Type": "application/json",
+      ...getAuthHeaders(),
     },
     body: JSON.stringify(command),
   });

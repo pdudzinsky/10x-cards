@@ -1,4 +1,5 @@
 import type { GenerateCardsCommand, GenerateCardsResponseDTO, ProfileDTO } from "../../types";
+import { getAuthHeaders } from "../../lib/api/auth-headers";
 
 export class ApiError extends Error {
   constructor(
@@ -18,7 +19,9 @@ export class ApiError extends Error {
 export async function fetchProfile(): Promise<ProfileDTO> {
   const response = await fetch("/api/v1/profile", {
     method: "GET",
-    credentials: "include",
+    headers: {
+      ...getAuthHeaders(),
+    },
   });
 
   if (!response.ok) {
@@ -36,9 +39,9 @@ export async function fetchProfile(): Promise<ProfileDTO> {
 export async function generateCards(deckId: string, command: GenerateCardsCommand): Promise<GenerateCardsResponseDTO> {
   const response = await fetch(`/api/v1/decks/${deckId}/ai-generate`, {
     method: "POST",
-    credentials: "include",
     headers: {
       "Content-Type": "application/json",
+      ...getAuthHeaders(),
     },
     body: JSON.stringify(command),
   });

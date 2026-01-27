@@ -10,6 +10,7 @@ import type {
   UpdateCardCommand,
   UpdateDeckCommand,
 } from "../../types";
+import { getAuthHeaders } from "../../lib/api/auth-headers";
 
 /**
  * API error with status code
@@ -32,7 +33,9 @@ export class ApiError extends Error {
 export async function fetchDeck(deckId: string, signal?: AbortSignal): Promise<DeckDetailDTO> {
   const response = await fetch(`/api/v1/decks/${deckId}`, {
     method: "GET",
-    credentials: "include",
+    headers: {
+      ...getAuthHeaders(),
+    },
     signal,
   });
 
@@ -51,9 +54,9 @@ export async function fetchDeck(deckId: string, signal?: AbortSignal): Promise<D
 export async function updateDeck(deckId: string, command: UpdateDeckCommand): Promise<DeckDTO> {
   const response = await fetch(`/api/v1/decks/${deckId}`, {
     method: "PATCH",
-    credentials: "include",
     headers: {
       "Content-Type": "application/json",
+      ...getAuthHeaders(),
     },
     body: JSON.stringify(command),
   });
@@ -73,7 +76,9 @@ export async function updateDeck(deckId: string, command: UpdateDeckCommand): Pr
 export async function deleteDeck(deckId: string): Promise<void> {
   const response = await fetch(`/api/v1/decks/${deckId}`, {
     method: "DELETE",
-    credentials: "include",
+    headers: {
+      ...getAuthHeaders(),
+    },
   });
 
   if (!response.ok) {
@@ -96,7 +101,9 @@ export async function listCards(
 
   const response = await fetch(url.toString(), {
     method: "GET",
-    credentials: "include",
+    headers: {
+      ...getAuthHeaders(),
+    },
     signal,
   });
 
@@ -115,9 +122,9 @@ export async function listCards(
 export async function createCard(deckId: string, command: CreateCardCommand): Promise<CardDTO> {
   const response = await fetch(`/api/v1/decks/${deckId}/cards`, {
     method: "POST",
-    credentials: "include",
     headers: {
       "Content-Type": "application/json",
+      ...getAuthHeaders(),
     },
     body: JSON.stringify(command),
   });
@@ -137,9 +144,9 @@ export async function createCard(deckId: string, command: CreateCardCommand): Pr
 export async function updateCard(cardId: string, command: UpdateCardCommand): Promise<CardDTO> {
   const response = await fetch(`/api/v1/cards/${cardId}`, {
     method: "PATCH",
-    credentials: "include",
     headers: {
       "Content-Type": "application/json",
+      ...getAuthHeaders(),
     },
     body: JSON.stringify(command),
   });
@@ -159,7 +166,9 @@ export async function updateCard(cardId: string, command: UpdateCardCommand): Pr
 export async function deleteCard(cardId: string): Promise<void> {
   const response = await fetch(`/api/v1/cards/${cardId}`, {
     method: "DELETE",
-    credentials: "include",
+    headers: {
+      ...getAuthHeaders(),
+    },
   });
 
   if (!response.ok) {
@@ -175,7 +184,9 @@ export async function deleteCard(cardId: string): Promise<void> {
 export async function acceptCard(cardId: string): Promise<{ id: string; status: string; next_review_at: string }> {
   const response = await fetch(`/api/v1/cards/${cardId}/accept`, {
     method: "POST",
-    credentials: "include",
+    headers: {
+      ...getAuthHeaders(),
+    },
   });
 
   if (!response.ok) {
@@ -193,7 +204,9 @@ export async function acceptCard(cardId: string): Promise<{ id: string; status: 
 export async function acceptAllCards(deckId: string): Promise<AcceptAllResponseDTO> {
   const response = await fetch(`/api/v1/decks/${deckId}/cards/accept-all`, {
     method: "POST",
-    credentials: "include",
+    headers: {
+      ...getAuthHeaders(),
+    },
   });
 
   if (!response.ok) {
@@ -211,7 +224,9 @@ export async function acceptAllCards(deckId: string): Promise<AcceptAllResponseD
 export async function rejectAllCards(deckId: string): Promise<DeleteUnverifiedResponseDTO> {
   const response = await fetch(`/api/v1/decks/${deckId}/cards/unverified`, {
     method: "DELETE",
-    credentials: "include",
+    headers: {
+      ...getAuthHeaders(),
+    },
   });
 
   if (!response.ok) {
