@@ -144,22 +144,23 @@ Produkt adresuje ten problem poprzez automatyczne generowanie propozycji fiszek 
 ### US-001
 
 Tytuł: Rejestracja konta
-Opis: Jako nowy użytkownik chcę założyć konto przy użyciu emaila i hasła, aby móc przechowywać swoje fiszki.
+Opis: Jako nowy użytkownik chcę założyć konto przy użyciu emaila i hasła, aby móc otrzymać dostęp do aplikacji w ramach swojego konta.
 Kryteria akceptacji:
 
-- Użytkownik może podać email i hasło.
+- Użytkownik musi podać email i hasło.
 - Konto zostaje utworzone po poprawnej walidacji.
-- Użytkownik może się zalogować po rejestracji.
+- Użytkownik po udanej rejestracji może się zalogować swoim emailem oraz hasłem.
 
 ### US-002
 
 Tytuł: Logowanie do aplikacji
-Opis: Jako użytkownik chcę zalogować się do aplikacji, aby uzyskać dostęp do swoich tali.
+Opis: Jako użytkownik chcę zalogować się do aplikacji, aby uzyskać dostęp do swoich zasobów (konto/talie/fiszki etc.)
 Kryteria akceptacji:
 
 - Logowanie wymaga poprawnego emaila i hasła.
 - Błędne dane skutkują komunikatem o błędzie.
-- Po zalogowaniu użytkownik widzi stronę główną.
+- Po zalogowaniu użytkownik widzi stronę główną z listą tali.
+- Użytkownik niezalogowany nie ma dostępu do aplikacji (listy talii/fiszek) ani innych funkcjonalności.
 
 ### US-003
 
