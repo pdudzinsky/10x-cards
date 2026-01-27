@@ -26,9 +26,6 @@ function validatePassword(password: string): string | null {
   if (password.length === 0) {
     return "Hasło jest wymagane";
   }
-  if (password.length < 6) {
-    return "Hasło musi mieć co najmniej 6 znaków";
-  }
   return null;
 }
 

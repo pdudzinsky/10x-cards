@@ -11,6 +11,7 @@ export interface LoginResult {
 
 export interface RegisterResult {
   user: User;
+  session: Session | null;
 }
 
 /**
@@ -44,6 +45,7 @@ export async function login(supabase: SupabaseClient<Database>, email: string, p
 
 /**
  * Rejestracja nowego użytkownika
+ * Zwraca sesję jeśli email verification jest wyłączona (auto-confirm)
  */
 export async function register(
   supabase: SupabaseClient<Database>,
@@ -71,6 +73,7 @@ export async function register(
 
   return {
     user: data.user,
+    session: data.session,
   };
 }
 
@@ -129,4 +132,28 @@ export async function getCurrentUser(supabase: SupabaseClient<Database>): Promis
   }
 
   return user;
+}
+
+/**
+ * Odświeżenie sesji przy użyciu refresh token
+ */
+export async function refreshSession(
+  supabase: SupabaseClient<Database>,
+  refreshToken: string
+): Promise<{ session: Session }> {
+  const { data, error } = await supabase.auth.refreshSession({
+    refresh_token: refreshToken,
+  });
+
+  if (error) {
+    throw new AuthError(error.message || "Nie można odświeżyć sesji", 401, "REFRESH_TOKEN_ERROR");
+  }
+
+  if (!data.session) {
+    throw new AuthError("Brak danych sesji", 401, "NO_SESSION_DATA");
+  }
+
+  return {
+    session: data.session,
+  };
 }

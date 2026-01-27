@@ -122,11 +122,26 @@ export function RegisterForm() {
           return;
         }
 
-        setSuccess(true);
+        const data = await response.json();
 
-        setTimeout(() => {
-          window.location.href = "/login";
-        }, 2000);
+        // If tokens are returned (auto-confirm enabled), save to localStorage and redirect to /decks
+        if (data.access_token && data.refresh_token) {
+          localStorage.setItem("auth_token", data.access_token);
+          localStorage.setItem("auth_refresh_token", data.refresh_token);
+
+          setSuccess(true);
+
+          setTimeout(() => {
+            window.location.href = "/decks";
+          }, 2000);
+        } else {
+          // If no tokens (email verification required), redirect to login
+          setSuccess(true);
+
+          setTimeout(() => {
+            window.location.href = "/login";
+          }, 2000);
+        }
       } catch (error) {
         setServerError("Wystąpił błąd połączenia. Spróbuj ponownie.");
       } finally {
@@ -145,7 +160,7 @@ export function RegisterForm() {
         <div className="space-y-2 text-center">
           <h1 className="text-3xl font-bold">Rejestracja udana!</h1>
           <p className="text-muted-foreground">
-            Konto zostało utworzone. Za chwilę zostaniesz przekierowany na stronę logowania.
+            Konto zostało utworzone. Za chwilę zostaniesz przekierowany do aplikacji.
           </p>
         </div>
       </div>

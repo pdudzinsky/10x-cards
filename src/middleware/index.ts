@@ -6,7 +6,27 @@ import type { Database } from "../db/database.types";
 const supabaseUrl = import.meta.env.SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.SUPABASE_KEY;
 
+// Public paths that don't require authentication
+const PUBLIC_PATHS = ["/", "/login", "/register", "/forgot-password", "/reset-password"];
+
+// Check if path is public
+function isPublicPath(pathname: string): boolean {
+  // Check exact matches
+  if (PUBLIC_PATHS.includes(pathname)) {
+    return true;
+  }
+
+  // Check if it's an auth API endpoint
+  if (pathname.startsWith("/api/v1/auth/")) {
+    return true;
+  }
+
+  return false;
+}
+
 export const onRequest = defineMiddleware(async (context, next) => {
+  const pathname = new URL(context.request.url).pathname;
+
   // Extract Bearer token from Authorization header
   const authHeader = context.request.headers.get("Authorization");
   const token = authHeader?.startsWith("Bearer ") ? authHeader.substring(7) : null;
@@ -33,6 +53,23 @@ export const onRequest = defineMiddleware(async (context, next) => {
     const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
     context.locals.supabase = supabase;
     context.locals.user = null;
+  }
+
+  // Protect API routes: return 401 for unauthenticated API requests
+  // HTML pages are NOT protected here - they will check auth client-side
+  if (!context.locals.user && pathname.startsWith("/api/v1/") && !pathname.startsWith("/api/v1/auth/")) {
+    return new Response(
+      JSON.stringify({
+        message: "Unauthorized",
+        code: "UNAUTHORIZED",
+      }),
+      {
+        status: 401,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
   }
 
   return next();
