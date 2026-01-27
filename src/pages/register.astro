@@ -5,7 +5,7 @@ import { RegisterForm } from "../components/auth/RegisterForm";
 export const prerender = false;
 ---
 
-<Layout title="Rejestracja | 10x Cards">
+<Layout title="Rejestracja | 10x Cards" showLogout={false}>
   <main class="flex min-h-screen items-center justify-center px-4 py-8">
     <RegisterForm client:load />
   </main>

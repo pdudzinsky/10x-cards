@@ -8,7 +8,7 @@ const url = new URL(Astro.request.url);
 const redirectTo = url.searchParams.get("redirectTo") || "/decks";
 ---
 
-<Layout title="Logowanie | 10x Cards">
+<Layout title="Logowanie | 10x Cards" showLogout={false}>
   <main class="flex min-h-screen items-center justify-center px-4 py-8">
     <LoginForm client:load redirectTo={redirectTo} />
   </main>
