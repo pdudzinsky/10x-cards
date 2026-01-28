@@ -65,6 +65,17 @@ AI-powered flashcard learning application that accelerates knowledge retention t
 - **Husky** - Git hooks for pre-commit checks
 - **lint-staged** - Run linters on staged files
 
+### Testing
+
+- **Vitest** - Fast unit test runner with native TypeScript and ESM support
+- **@testing-library/react** - React component testing with user-centric queries
+- **@testing-library/user-event** - Realistic user interaction simulation
+- **MSW (Mock Service Worker)** - API mocking at the network level
+- **Playwright** - Cross-browser E2E testing and API testing
+- **axe-playwright** - Automated accessibility testing (WCAG 2.1)
+- **Artillery** - Load testing for API endpoints (Node.js-native)
+- **Lighthouse CI** - Frontend performance monitoring and Core Web Vitals
+
 ## Getting Started Locally
 
 ### Prerequisites
