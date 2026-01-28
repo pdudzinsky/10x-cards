@@ -27,11 +27,24 @@ Manualne tworzenie wysokiej jakości fiszek edukacyjnych jest czasochłonne, co 
 
 ## Tech Stack
 
+### Frontend
+
 - Astro 5
 - TypeScript 5
 - React 19
 - Tailwind 4
 - Shadcn/ui
+
+### Testing
+
+- Vitest - unit and integration tests
+- @testing-library/react - component testing
+- @testing-library/user-event - user interaction simulation
+- MSW (Mock Service Worker) - API mocking
+- Playwright - E2E and API testing
+- axe-playwright - accessibility testing
+- Artillery - load testing
+- Lighthouse CI - performance monitoring
 
 ## Project Structure
 

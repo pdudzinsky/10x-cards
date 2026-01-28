@@ -207,10 +207,12 @@ sequenceDiagram
 ## Podsumowanie mechanizmów
 
 ### Przechowywanie tokenów
+
 - **localStorage.auth_token** - access token (JWT) do autoryzacji żądań API
 - **localStorage.auth_refresh_token** - refresh token do odświeżania sesji
 
 ### Ochrona ścieżek
+
 - **Ścieżki publiczne** (bez autoryzacji):
   - `/`, `/login`, `/register`, `/forgot-password`, `/reset-password`
   - `/api/v1/auth/*` (endpointy autentykacji)
@@ -218,10 +220,12 @@ sequenceDiagram
   - `/api/v1/*` (wszystkie pozostałe endpointy API)
 
 ### Walidacja
+
 - **Client-side**: podstawowa walidacja formularzy (email, hasło)
 - **Server-side**: pełna walidacja Zod schemas
 
 ### Obsługa błędów
+
 - `400 VALIDATION_ERROR` - błędy walidacji danych wejściowych
 - `401 INVALID_CREDENTIALS` - niepoprawne dane logowania
 - `401 UNAUTHORIZED` - brak lub nieważny token

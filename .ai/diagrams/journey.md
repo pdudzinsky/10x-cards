@@ -323,13 +323,13 @@ stateDiagram-v2
 
 ## Legenda
 
-| Element | Znaczenie |
-|---------|-----------|
-| `[*]` | Stan poczatkowy lub koncowy |
-| `<<choice>>` | Punkt decyzyjny |
-| Stan prostokatny | Akcja lub widok |
-| Strzalka z etykieta | Przejscie z opisem warunku |
-| `note` | Dodatkowa informacja |
+| Element             | Znaczenie                   |
+| ------------------- | --------------------------- |
+| `[*]`               | Stan poczatkowy lub koncowy |
+| `<<choice>>`        | Punkt decyzyjny             |
+| Stan prostokatny    | Akcja lub widok             |
+| Strzalka z etykieta | Przejscie z opisem warunku  |
+| `note`              | Dodatkowa informacja        |
 
 ## Zrodla
 
