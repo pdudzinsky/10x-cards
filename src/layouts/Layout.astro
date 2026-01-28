@@ -34,11 +34,13 @@ const { title = "10x Astro Starter", showLogout = true } = Astro.props;
     <div class="fixed left-4 top-4 z-50">
       <ThemeToggle client:load />
     </div>
-    {showLogout && (
-      <div class="fixed right-4 top-4 z-50">
-        <LogoutButton client:load />
-      </div>
-    )}
+    {
+      showLogout && (
+        <div class="fixed right-4 top-4 z-50">
+          <LogoutButton client:load />
+        </div>
+      )
+    }
     <slot />
     <Toaster client:load />
   </body>
