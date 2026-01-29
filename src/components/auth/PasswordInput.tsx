@@ -13,6 +13,7 @@ interface PasswordInputProps {
   "aria-invalid"?: boolean;
   "aria-describedby"?: string;
   autoComplete?: string;
+  "data-testid"?: string;
 }
 
 export function PasswordInput({
@@ -22,6 +23,7 @@ export function PasswordInput({
   placeholder,
   disabled,
   autoComplete,
+  "data-testid": dataTestId,
   ...ariaProps
 }: PasswordInputProps) {
   const [showPassword, setShowPassword] = useState(false);
@@ -41,6 +43,7 @@ export function PasswordInput({
         disabled={disabled}
         autoComplete={autoComplete}
         className="pr-10"
+        data-testid={dataTestId}
         {...ariaProps}
       />
       <Button

@@ -195,6 +195,7 @@ export function RegisterForm() {
             autoComplete="email"
             aria-invalid={!!emailError}
             aria-describedby={emailError ? "email-error" : undefined}
+            data-testid="register-email"
           />
           {emailError && <FormError message={emailError} id="email-error" />}
         </div>
@@ -210,6 +211,7 @@ export function RegisterForm() {
             autoComplete="new-password"
             aria-invalid={!!passwordError}
             aria-describedby={passwordError ? "password-error" : undefined}
+            data-testid="register-password"
           />
           {passwordError && <FormError message={passwordError} id="password-error" />}
         </div>
@@ -225,6 +227,7 @@ export function RegisterForm() {
             autoComplete="new-password"
             aria-invalid={!!confirmPasswordError}
             aria-describedby={confirmPasswordError ? "confirm-password-error" : undefined}
+            data-testid="register-confirm-password"
           />
           {confirmPasswordError && <FormError message={confirmPasswordError} id="confirm-password-error" />}
         </div>
@@ -235,7 +238,7 @@ export function RegisterForm() {
           </div>
         )}
 
-        <Button type="submit" className="w-full" disabled={isSubmitDisabled}>
+        <Button type="submit" className="w-full" disabled={isSubmitDisabled} data-testid="register-submit">
           {isLoading ? "Rejestracja..." : "Zarejestruj się"}
         </Button>
       </form>

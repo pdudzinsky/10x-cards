@@ -140,6 +140,7 @@ export function LoginForm({ redirectTo = "/decks" }: LoginFormProps) {
             autoComplete="email"
             aria-invalid={!!emailError}
             aria-describedby={emailError ? "email-error" : undefined}
+            data-testid="login-email"
           />
           {emailError && <FormError message={emailError} id="email-error" />}
         </div>
@@ -155,6 +156,7 @@ export function LoginForm({ redirectTo = "/decks" }: LoginFormProps) {
             autoComplete="current-password"
             aria-invalid={!!passwordError}
             aria-describedby={passwordError ? "password-error" : undefined}
+            data-testid="login-password"
           />
           {passwordError && <FormError message={passwordError} id="password-error" />}
         </div>
@@ -165,7 +167,7 @@ export function LoginForm({ redirectTo = "/decks" }: LoginFormProps) {
           </div>
         )}
 
-        <Button type="submit" className="w-full" disabled={isSubmitDisabled}>
+        <Button type="submit" className="w-full" disabled={isSubmitDisabled} data-testid="login-submit">
           {isLoading ? "Logowanie..." : "Zaloguj się"}
         </Button>
       </form>

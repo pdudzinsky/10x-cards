@@ -49,7 +49,14 @@ export function LogoutButton() {
   }
 
   return (
-    <Button variant="outline" size="sm" onClick={handleLogout} disabled={isLoading} aria-label="Wyloguj się">
+    <Button
+      variant="outline"
+      size="sm"
+      onClick={handleLogout}
+      disabled={isLoading}
+      aria-label="Wyloguj się"
+      data-testid="logout-button"
+    >
       <LogOut className="mr-2 h-4 w-4" />
       {isLoading ? "Wylogowywanie..." : "Wyloguj"}
     </Button>

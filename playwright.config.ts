@@ -2,7 +2,7 @@ import { defineConfig, devices } from "@playwright/test";
 import dotenv from "dotenv";
 import path from "path";
 
-dotenv.config({ path: path.resolve(process.cwd(), ".env.test") });
+dotenv.config({ path: path.resolve(process.cwd(), ".env-test") });
 
 export default defineConfig({
   // Test directory
@@ -51,5 +51,14 @@ export default defineConfig({
     command: "npm run dev",
     url: "http://localhost:4321",
     reuseExistingServer: !process.env.CI,
+    timeout: 120000, // 2 minutes for server to start
+    stdout: "pipe",
+    stderr: "pipe",
+    env: {
+      ...process.env,
+      SUPABASE_URL: process.env.SUPABASE_URL!,
+      SUPABASE_KEY: process.env.SUPABASE_KEY!,
+      OPENROUTER_API_KEY: process.env.OPENROUTER_API_KEY!,
+    },
   },
 });
