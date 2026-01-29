@@ -109,14 +109,9 @@ describe("AI Generate Error Utils", () => {
     });
 
     describe("all error types coverage", () => {
-      const errorTypes: Array<"validation" | "limit_exceeded" | "not_found" | "generation_failed" | "unauthorized" | "unknown"> = [
-        "validation",
-        "limit_exceeded",
-        "not_found",
-        "generation_failed",
-        "unauthorized",
-        "unknown",
-      ];
+      const errorTypes: Array<
+        "validation" | "limit_exceeded" | "not_found" | "generation_failed" | "unauthorized" | "unknown"
+      > = ["validation", "limit_exceeded", "not_found", "generation_failed", "unauthorized", "unknown"];
 
       it("should return non-empty message for all error types", () => {
         errorTypes.forEach((errorType) => {

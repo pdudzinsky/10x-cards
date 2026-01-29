@@ -1,11 +1,5 @@
 import { describe, it, expect } from "vitest";
-import {
-  validateFront,
-  validateBack,
-  validateCardForm,
-  MAX_FRONT_LENGTH,
-  MAX_BACK_LENGTH,
-} from "./validation";
+import { validateFront, validateBack, validateCardForm, MAX_FRONT_LENGTH, MAX_BACK_LENGTH } from "./validation";
 
 describe("Card Form Validation", () => {
   describe("validateFront", () => {
