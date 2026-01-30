@@ -71,7 +71,12 @@ export function CardSection({
           <CardStatusFilterComponent value={statusFilter} onChange={onFilterChange} />
         </div>
         <div className="flex gap-2">
-          <Button onClick={() => setIsAddFormOpen(true)} disabled={isAddFormOpen} size="sm">
+          <Button
+            onClick={() => setIsAddFormOpen(true)}
+            disabled={isAddFormOpen}
+            size="sm"
+            data-testid="add-card-button"
+          >
             Dodaj fiszkę
           </Button>
           <Button onClick={onGenerateAI} variant="outline" size="sm">

@@ -47,7 +47,7 @@ export function AddCardForm({ onSubmit, onCancel }: AddCardFormProps) {
   }, [reset, onCancel]);
 
   return (
-    <form onSubmit={handleSubmit} className="rounded-lg border p-4">
+    <form onSubmit={handleSubmit} className="rounded-lg border p-4" data-testid="add-card-form">
       <div className="space-y-4">
         <div>
           <div className="flex items-center justify-between">
@@ -58,6 +58,7 @@ export function AddCardForm({ onSubmit, onCancel }: AddCardFormProps) {
           </div>
           <Textarea
             id="card-front"
+            data-testid="card-front-input"
             value={form.front}
             onChange={(e) => setField("front", e.target.value)}
             placeholder="Wprowadź treść przodu fiszki"
@@ -68,7 +69,7 @@ export function AddCardForm({ onSubmit, onCancel }: AddCardFormProps) {
             rows={3}
           />
           {form.errors.front && (
-            <p id="card-front-error" className="mt-1 text-sm text-destructive">
+            <p id="card-front-error" className="mt-1 text-sm text-destructive" data-testid="card-front-error">
               {form.errors.front}
             </p>
           )}
@@ -83,6 +84,7 @@ export function AddCardForm({ onSubmit, onCancel }: AddCardFormProps) {
           </div>
           <Textarea
             id="card-back"
+            data-testid="card-back-input"
             value={form.back}
             onChange={(e) => setField("back", e.target.value)}
             placeholder="Wprowadź treść tyłu fiszki"
@@ -93,17 +95,23 @@ export function AddCardForm({ onSubmit, onCancel }: AddCardFormProps) {
             rows={3}
           />
           {form.errors.back && (
-            <p id="card-back-error" className="mt-1 text-sm text-destructive">
+            <p id="card-back-error" className="mt-1 text-sm text-destructive" data-testid="card-back-error">
               {form.errors.back}
             </p>
           )}
         </div>
 
         <div className="flex justify-end gap-2">
-          <Button type="button" variant="outline" onClick={handleCancel} disabled={isSubmitting}>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={handleCancel}
+            disabled={isSubmitting}
+            data-testid="card-cancel-button"
+          >
             Anuluj
           </Button>
-          <Button type="submit" disabled={isSubmitting}>
+          <Button type="submit" disabled={isSubmitting} data-testid="card-save-button">
             {isSubmitting ? "Zapisywanie..." : "Zapisz"}
           </Button>
         </div>

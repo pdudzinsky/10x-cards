@@ -72,7 +72,7 @@ export function CardItem({
   // Render edit mode
   if (isEditing) {
     return (
-      <div className="rounded-lg border p-4">
+      <div className="rounded-lg border p-4" data-testid="card-item-editing">
         <form onSubmit={handleSaveEdit} className="space-y-4">
           <div>
             <div className="flex items-center justify-between">
@@ -83,6 +83,7 @@ export function CardItem({
             </div>
             <Textarea
               id={`card-front-${card.id}`}
+              data-testid="card-front-input"
               value={form.front}
               onChange={(e) => setField("front", e.target.value)}
               disabled={isSubmitting}
@@ -107,6 +108,7 @@ export function CardItem({
             </div>
             <Textarea
               id={`card-back-${card.id}`}
+              data-testid="card-back-input"
               value={form.back}
               onChange={(e) => setField("back", e.target.value)}
               disabled={isSubmitting}
@@ -123,10 +125,16 @@ export function CardItem({
           </div>
 
           <div className="flex justify-end gap-2">
-            <Button type="button" variant="outline" onClick={onCancelEdit} disabled={isSubmitting}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onCancelEdit}
+              disabled={isSubmitting}
+              data-testid="card-cancel-edit-button"
+            >
               Anuluj
             </Button>
-            <Button type="submit" disabled={isSubmitting}>
+            <Button type="submit" disabled={isSubmitting} data-testid="card-save-edit-button">
               {isSubmitting ? "Zapisywanie..." : "Zapisz"}
             </Button>
           </div>
@@ -137,40 +145,44 @@ export function CardItem({
 
   // Render read mode
   return (
-    <div className="rounded-lg border p-4">
+    <div className="rounded-lg border p-4" data-testid="card-item">
       <div className="space-y-3">
         <div>
           <div className="mb-1 flex items-center gap-2">
             <span className="text-sm font-medium text-muted-foreground">Przód</span>
             {card.status === "unverified" && <Badge variant="outline">Niezweryfikowana</Badge>}
           </div>
-          <p className="whitespace-pre-wrap">{card.front}</p>
+          <p className="whitespace-pre-wrap" data-testid="card-front-text">
+            {card.front}
+          </p>
         </div>
 
         <div>
           <span className="mb-1 block text-sm font-medium text-muted-foreground">Tył</span>
-          <p className="whitespace-pre-wrap">{card.back}</p>
+          <p className="whitespace-pre-wrap" data-testid="card-back-text">
+            {card.back}
+          </p>
         </div>
 
         <div className="flex justify-end gap-2">
           {card.status === "unverified" ? (
             <>
-              <Button onClick={handleAccept} size="sm" disabled={isAccepting}>
+              <Button onClick={handleAccept} size="sm" disabled={isAccepting} data-testid="card-accept-button">
                 {isAccepting ? "Akceptowanie..." : "Zaakceptuj"}
               </Button>
-              <Button onClick={onStartEdit} variant="outline" size="sm">
+              <Button onClick={onStartEdit} variant="outline" size="sm" data-testid="card-edit-button">
                 Edytuj
               </Button>
-              <Button onClick={onReject} variant="destructive" size="sm">
+              <Button onClick={onReject} variant="destructive" size="sm" data-testid="card-reject-button">
                 Odrzuć
               </Button>
             </>
           ) : (
             <>
-              <Button onClick={onStartEdit} variant="outline" size="sm">
+              <Button onClick={onStartEdit} variant="outline" size="sm" data-testid="card-edit-button">
                 Edytuj
               </Button>
-              <Button onClick={onDelete} variant="destructive" size="sm">
+              <Button onClick={onDelete} variant="destructive" size="sm" data-testid="card-delete-button">
                 Usuń
               </Button>
             </>

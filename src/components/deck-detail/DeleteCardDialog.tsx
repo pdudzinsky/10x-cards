@@ -37,10 +37,22 @@ export function DeleteCardDialog({ isOpen, onConfirm, onCancel }: DeleteCardDial
         </DialogHeader>
 
         <DialogFooter>
-          <Button type="button" variant="outline" onClick={onCancel} disabled={isDeleting}>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={onCancel}
+            disabled={isDeleting}
+            data-testid="delete-card-cancel-button"
+          >
             Anuluj
           </Button>
-          <Button type="button" variant="destructive" onClick={handleConfirm} disabled={isDeleting}>
+          <Button
+            type="button"
+            variant="destructive"
+            onClick={handleConfirm}
+            disabled={isDeleting}
+            data-testid="delete-card-confirm-button"
+          >
             {isDeleting ? "Usuwanie..." : "Usuń fiszkę"}
           </Button>
         </DialogFooter>

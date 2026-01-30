@@ -24,14 +24,17 @@ export function CardList({
 }: CardListProps) {
   if (cards.length === 0) {
     return (
-      <div className="flex min-h-[200px] items-center justify-center rounded-lg border border-dashed">
+      <div
+        className="flex min-h-[200px] items-center justify-center rounded-lg border border-dashed"
+        data-testid="card-list-empty"
+      >
         <p className="text-muted-foreground">Brak fiszek do wyświetlenia</p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4" data-testid="card-list">
       {cards.map((card) => (
         <CardItem
           key={card.id}

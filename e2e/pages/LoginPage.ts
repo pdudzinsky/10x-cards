@@ -17,26 +17,33 @@ export class LoginPage {
 
   async goto() {
     await this.page.goto("/login", { waitUntil: "networkidle" });
-    // Wait for React to hydrate
-    await this.page.waitForTimeout(1000);
-    // Ensure form is visible and interactive
+
+    // Wait for form to be fully interactive (React hydrated)
     await expect(this.emailInput).toBeVisible();
+    await expect(this.emailInput).toBeEditable();
     await expect(this.submitButton).toBeVisible();
   }
 
-  async login(email: string, password: string) {
-    // Focus and type email using keyboard API
-    await this.emailInput.focus();
-    await this.page.keyboard.type(email);
-
-    // Focus and type password
-    await this.passwordInput.focus();
-    await this.page.keyboard.type(password);
+  async login(email: string, password: string, waitForRedirect = false) {
+    // Use fill() instead of focus() + keyboard.type() - more reliable
+    await this.emailInput.fill(email);
+    await this.passwordInput.fill(password);
 
     // Wait for button to be enabled
     await expect(this.submitButton).toBeEnabled({ timeout: 10000 });
 
-    await this.submitButton.click();
+    if (waitForRedirect) {
+      // Click submit and wait for navigation to complete
+      // This prevents race condition where we check URL before redirect happens
+      await Promise.all([this.page.waitForURL("/decks", { timeout: 10000 }), this.submitButton.click()]);
+    } else {
+      // Just click submit without waiting for navigation
+      await this.submitButton.click();
+      // Wait for request to complete (either success or error)
+      await this.page.waitForResponse((response) => response.url().includes("/api/v1/auth/login"), {
+        timeout: 10000,
+      });
+    }
   }
 
   async getErrorMessage() {

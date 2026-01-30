@@ -36,6 +36,16 @@ export default defineConfig({
 
     // Video on failure
     video: "retain-on-failure",
+
+    // Environment variables for tests (cleanup helpers need these)
+    env: {
+      SUPABASE_URL: process.env.SUPABASE_URL!,
+      SUPABASE_KEY: process.env.SUPABASE_KEY!,
+      SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY!,
+      E2E_USERNAME_ID: process.env.E2E_USERNAME_ID!,
+      E2E_USERNAME: process.env.E2E_USERNAME!,
+      E2E_PASSWORD: process.env.E2E_PASSWORD!,
+    },
   },
 
   // Configure projects for Chromium only (as per testing rules)

@@ -9,7 +9,7 @@ interface CreateDeckButtonProps {
 
 export function CreateDeckButton({ onClick, disabled }: CreateDeckButtonProps) {
   return (
-    <Button onClick={onClick} disabled={disabled}>
+    <Button onClick={onClick} disabled={disabled} data-testid="create-deck-button">
       <Plus className="h-4 w-4" />
       Utwórz talię
     </Button>

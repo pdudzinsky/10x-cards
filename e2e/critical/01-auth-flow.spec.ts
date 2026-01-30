@@ -17,11 +17,8 @@ test.describe("Complete User Journey - Auth Flow", () => {
     const loginPage = new LoginPage(page);
     await loginPage.goto();
 
-    // Fill and submit login form
-    await loginPage.login(testUser.email, testUser.password);
-
-    // Wait for redirect to /decks (dashboard)
-    await page.waitForURL("/decks", { timeout: 10000 });
+    // Fill and submit login form (wait for redirect to complete)
+    await loginPage.login(testUser.email, testUser.password, true);
 
     // Assert: URL should be /decks
     await expect(page).toHaveURL("/decks");
@@ -62,11 +59,8 @@ test.describe("Complete User Journey - Auth Flow", () => {
     // === PART 3: RE-LOGIN ===
     await loginPage.goto();
 
-    // Fill and submit login form again
-    await loginPage.login(testUser.email, testUser.password);
-
-    // Wait for redirect to /decks
-    await page.waitForURL("/decks", { timeout: 10000 });
+    // Fill and submit login form again (wait for redirect to complete)
+    await loginPage.login(testUser.email, testUser.password, true);
 
     // Assert: URL should be /decks
     await expect(page).toHaveURL("/decks");

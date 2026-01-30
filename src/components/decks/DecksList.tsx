@@ -7,7 +7,7 @@ interface DecksListProps {
 
 export function DecksList({ items }: DecksListProps) {
   return (
-    <ul className="space-y-3">
+    <ul className="space-y-3" data-testid="deck-list">
       {items.map((item) => (
         <DeckListItem key={item.id} item={item} />
       ))}

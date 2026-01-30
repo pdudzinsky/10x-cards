@@ -94,6 +94,7 @@ export function CreateDeckDialog({
             <Label htmlFor="deck-name">Nazwa tali</Label>
             <Input
               id="deck-name"
+              data-testid="deck-name-input"
               value={name}
               onChange={(e) => handleNameChange(e.target.value)}
               placeholder="np. Angielski - słówka"
@@ -111,10 +112,16 @@ export function CreateDeckDialog({
           </div>
 
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => handleOpenChange(false)} disabled={isCreating}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => handleOpenChange(false)}
+              disabled={isCreating}
+              data-testid="deck-cancel-button"
+            >
               Anuluj
             </Button>
-            <Button type="submit" disabled={isSubmitDisabled}>
+            <Button type="submit" disabled={isSubmitDisabled} data-testid="deck-save-button">
               {isCreating ? "Tworzenie..." : "Utwórz"}
             </Button>
           </DialogFooter>
