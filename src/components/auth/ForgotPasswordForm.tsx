@@ -73,7 +73,7 @@ export function ForgotPasswordForm() {
         }
 
         setSuccess(true);
-      } catch (error) {
+      } catch {
         setServerError("Wystąpił błąd połączenia. Spróbuj ponownie.");
       } finally {
         setIsLoading(false);

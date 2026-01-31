@@ -10,6 +10,7 @@ export function AIGenerateView({ deckId }: AIGenerateViewProps) {
     (result: { generated: number }) => {
       toast.success(`Wygenerowano ${result.generated} fiszek`);
       setTimeout(() => {
+        // eslint-disable-next-line react-compiler/react-compiler
         window.location.href = `/decks/${deckId}`;
       }, 1000);
     },

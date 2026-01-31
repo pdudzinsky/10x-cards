@@ -56,11 +56,7 @@ async function refreshAccessToken(): Promise<string | null> {
  * @param options - fetch options (będzie automatycznie dodany Authorization header)
  * @param retryCount - liczba prób (domyślnie 1)
  */
-export async function fetchWithAutoRefresh(
-  url: string,
-  options: RequestInit = {},
-  retryCount: number = 1
-): Promise<Response> {
+export async function fetchWithAutoRefresh(url: string, options: RequestInit = {}, retryCount = 1): Promise<Response> {
   // Get current token
   const token = localStorage.getItem("auth_token");
 

@@ -150,7 +150,7 @@ export function RegisterForm() {
             window.location.href = "/login";
           }, 2000);
         }
-      } catch (error) {
+      } catch {
         setServerError("Wystąpił błąd połączenia. Spróbuj ponownie.");
       } finally {
         setIsLoading(false);

@@ -11,9 +11,9 @@ test.describe.configure({ mode: "serial" });
 test.describe("Deck Management + Manual Card Creation", () => {
   // Use existing test user from .env-test
   const testUser = {
-    id: process.env.E2E_USERNAME_ID!,
-    email: process.env.E2E_USERNAME!,
-    password: process.env.E2E_PASSWORD!,
+    id: process.env.E2E_USERNAME_ID ?? "",
+    email: process.env.E2E_USERNAME ?? "",
+    password: process.env.E2E_PASSWORD ?? "",
   };
 
   let deckName: string;
@@ -360,7 +360,7 @@ test.describe("Deck Management + Manual Card Creation", () => {
     await expect(card2Item).toBeVisible({ timeout: 15000 });
 
     // Verify both cards exist
-    let cardCount = await deckDetailPage.getCardCount();
+    const cardCount = await deckDetailPage.getCardCount();
     expect(cardCount).toBe(2);
 
     // Delete first card

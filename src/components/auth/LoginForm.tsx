@@ -109,7 +109,7 @@ export function LoginForm({ redirectTo = "/decks" }: LoginFormProps) {
         }
 
         window.location.href = redirectTo;
-      } catch (error) {
+      } catch {
         setServerError("Wystąpił błąd połączenia. Spróbuj ponownie.");
       } finally {
         setIsLoading(false);

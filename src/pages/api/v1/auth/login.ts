@@ -3,7 +3,7 @@ import { ZodError } from "zod";
 
 import { loginSchema } from "@/lib/schemas/auth.schemas";
 import { login } from "@/lib/services/auth.service";
-import { AuthError, ValidationError } from "@/lib/errors/auth.errors";
+import { AuthError } from "@/lib/errors/auth.errors";
 
 export const prerender = false;
 

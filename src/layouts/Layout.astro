@@ -21,7 +21,6 @@ const { title = "10x Astro Starter", showLogout = true } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <script is:inline>
-      // Inicjalizacja motywu przed renderowaniem aby uniknąć flickera
       (function () {
         const theme = localStorage.getItem("theme") || "light";
         if (theme === "dark") {

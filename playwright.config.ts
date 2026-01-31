@@ -39,12 +39,12 @@ export default defineConfig({
 
     // Environment variables for tests (cleanup helpers need these)
     env: {
-      SUPABASE_URL: process.env.SUPABASE_URL!,
-      SUPABASE_KEY: process.env.SUPABASE_KEY!,
-      SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY!,
-      E2E_USERNAME_ID: process.env.E2E_USERNAME_ID!,
-      E2E_USERNAME: process.env.E2E_USERNAME!,
-      E2E_PASSWORD: process.env.E2E_PASSWORD!,
+      SUPABASE_URL: process.env.SUPABASE_URL ?? "",
+      SUPABASE_KEY: process.env.SUPABASE_KEY ?? "",
+      SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY ?? "",
+      E2E_USERNAME_ID: process.env.E2E_USERNAME_ID ?? "",
+      E2E_USERNAME: process.env.E2E_USERNAME ?? "",
+      E2E_PASSWORD: process.env.E2E_PASSWORD ?? "",
     },
   },
 
@@ -66,9 +66,9 @@ export default defineConfig({
     stderr: "pipe",
     env: {
       ...process.env,
-      SUPABASE_URL: process.env.SUPABASE_URL!,
-      SUPABASE_KEY: process.env.SUPABASE_KEY!,
-      OPENROUTER_API_KEY: process.env.OPENROUTER_API_KEY!,
+      SUPABASE_URL: process.env.SUPABASE_URL ?? "",
+      SUPABASE_KEY: process.env.SUPABASE_KEY ?? "",
+      OPENROUTER_API_KEY: process.env.OPENROUTER_API_KEY ?? "",
     },
   },
 });

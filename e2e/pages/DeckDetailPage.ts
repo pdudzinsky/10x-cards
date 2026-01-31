@@ -78,7 +78,7 @@ export class DeckDetailPage {
     await Promise.all([
       this.page.waitForResponse(
         (response) =>
-          response.url().match(/\/api\/v1\/cards\/[a-f0-9\-]+$/) &&
+          response.url().match(/\/api\/v1\/cards\/[a-f0-9-]+$/) &&
           response.request().method() === "PATCH" &&
           response.status() === 200,
         { timeout: 10000 }
@@ -111,7 +111,7 @@ export class DeckDetailPage {
     // Setup response listeners BEFORE clicking
     const deletePromise = this.page.waitForResponse(
       (response) =>
-        response.url().match(/\/api\/v1\/cards\/[a-f0-9\-]+$/) &&
+        response.url().match(/\/api\/v1\/cards\/[a-f0-9-]+$/) &&
         response.request().method() === "DELETE" &&
         response.status() === 204,
       { timeout: 10000 }
@@ -119,7 +119,7 @@ export class DeckDetailPage {
 
     const refetchPromise = this.page.waitForResponse(
       (response) =>
-        response.url().match(/\/api\/v1\/decks\/[a-f0-9\-]+\/cards/) && response.request().method() === "GET",
+        response.url().match(/\/api\/v1\/decks\/[a-f0-9-]+\/cards/) && response.request().method() === "GET",
       { timeout: 15000 }
     );
 

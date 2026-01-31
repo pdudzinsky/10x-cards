@@ -1,4 +1,4 @@
-export function generateTestCard(index: number = 1) {
+export function generateTestCard(index = 1) {
   return {
     front: `Pytanie ${index}`,
     back: `Odpowiedź ${index}`,

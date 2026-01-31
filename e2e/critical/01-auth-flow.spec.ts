@@ -1,18 +1,15 @@
 import { test, expect } from "@playwright/test";
-import { RegisterPage } from "../pages/RegisterPage";
 import { LoginPage } from "../pages/LoginPage";
 import { DashboardPage } from "../pages/DashboardPage";
-import { generateTestUser } from "../fixtures/user.fixture";
-import { cleanupTestUser } from "../helpers/cleanup.helper";
 
 test.describe("Complete User Journey - Auth Flow", () => {
   // Use existing test user from .env-test
   const testUser = {
-    email: process.env.E2E_USERNAME!,
-    password: process.env.E2E_PASSWORD!,
+    email: process.env.E2E_USERNAME ?? "",
+    password: process.env.E2E_PASSWORD ?? "",
   };
 
-  test("should complete full auth flow: login -> logout -> login again", async ({ page, context }) => {
+  test("should complete full auth flow: login -> logout -> login again", async ({ page }) => {
     // === PART 1: LOGIN ===
     const loginPage = new LoginPage(page);
     await loginPage.goto();

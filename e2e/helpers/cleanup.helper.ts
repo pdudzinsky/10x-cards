@@ -5,8 +5,8 @@ import path from "path";
 // Load .env-test explicitly for cleanup helpers
 dotenv.config({ path: path.resolve(process.cwd(), ".env-test") });
 
-const supabaseUrl = process.env.SUPABASE_URL!;
-const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+const supabaseUrl = process.env.SUPABASE_URL ?? "";
+const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY ?? "";
 
 /**
  * Cleanup all test data from database using service role key

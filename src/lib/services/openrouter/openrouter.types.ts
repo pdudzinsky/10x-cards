@@ -59,13 +59,13 @@ export interface ChatCompletionRequest {
  */
 export interface ChatCompletionResponse {
   id: string;
-  choices: Array<{
+  choices: {
     message: {
       role: string;
       content: string;
     };
     finish_reason: string;
-  }>;
+  }[];
   model: string;
   usage?: {
     prompt_tokens: number;
@@ -78,8 +78,8 @@ export interface ChatCompletionResponse {
  * Parsed flashcards response from model
  */
 export interface FlashcardsResponse {
-  cards: Array<{
+  cards: {
     front: string;
     back: string;
-  }>;
+  }[];
 }

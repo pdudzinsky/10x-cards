@@ -12,6 +12,7 @@ export function ReviewSessionView({ deckId }: ReviewSessionViewProps) {
   const [isFlipped, setIsFlipped] = useState(false);
 
   const handleUnauthorized = useCallback(() => {
+    // eslint-disable-next-line react-compiler/react-compiler
     window.location.href = "/login";
   }, []);
 

@@ -6,24 +6,6 @@ import type { Database } from "../db/database.types";
 const supabaseUrl = import.meta.env.SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.SUPABASE_KEY;
 
-// Public paths that don't require authentication
-const PUBLIC_PATHS = ["/", "/login", "/register", "/forgot-password", "/reset-password"];
-
-// Check if path is public
-function isPublicPath(pathname: string): boolean {
-  // Check exact matches
-  if (PUBLIC_PATHS.includes(pathname)) {
-    return true;
-  }
-
-  // Check if it's an auth API endpoint
-  if (pathname.startsWith("/api/v1/auth/")) {
-    return true;
-  }
-
-  return false;
-}
-
 export const onRequest = defineMiddleware(async (context, next) => {
   const pathname = new URL(context.request.url).pathname;
 

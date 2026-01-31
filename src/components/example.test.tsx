@@ -3,7 +3,7 @@ import { render, screen } from "@/test/utils/test-utils";
 
 // Example component for demonstration
 function ExampleComponent({ text }: { text: string }) {
-  return <div role="heading">{text}</div>;
+  return <h1>{text}</h1>;
 }
 
 describe("ExampleComponent", () => {

@@ -266,7 +266,7 @@ export async function acceptCard(
     return {
       id: card.id,
       status: card.status,
-      next_review_at: card.next_review_at!,
+      next_review_at: card.next_review_at ?? new Date().toISOString(),
     };
   }
 
