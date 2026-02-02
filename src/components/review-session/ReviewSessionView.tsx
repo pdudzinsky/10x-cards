@@ -12,6 +12,8 @@ export function ReviewSessionView({ deckId }: ReviewSessionViewProps) {
   const [isFlipped, setIsFlipped] = useState(false);
 
   const handleUnauthorized = useCallback(() => {
+    localStorage.removeItem("auth_token");
+    localStorage.removeItem("auth_refresh_token");
     // eslint-disable-next-line react-compiler/react-compiler
     window.location.href = "/login";
   }, []);

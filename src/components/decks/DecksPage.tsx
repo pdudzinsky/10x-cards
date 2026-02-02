@@ -12,6 +12,8 @@ export function DecksPage() {
   const [createError, setCreateError] = useState<string | null>(null);
 
   const handleUnauthorized = useCallback(() => {
+    localStorage.removeItem("auth_token");
+    localStorage.removeItem("auth_refresh_token");
     window.location.href = "/login";
   }, []);
 

@@ -18,6 +18,8 @@ interface DeckDetailViewProps {
 
 export function DeckDetailView({ deckId }: DeckDetailViewProps) {
   const handleUnauthorized = useCallback(() => {
+    localStorage.removeItem("auth_token");
+    localStorage.removeItem("auth_refresh_token");
     window.location.href = "/login";
   }, []);
 
