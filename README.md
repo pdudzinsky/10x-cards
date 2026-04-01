@@ -1,6 +1,6 @@
 # 10x-cards
 
-AI-powered flashcard learning application that accelerates knowledge retention through intelligent spaced repetition.
+AI-powered flashcard learning application that accelerates knowledge retention through intelligent spaced repetition
 
 ## Table of Contents
 
